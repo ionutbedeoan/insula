@@ -1,0 +1,76 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> the-forgotten-island@1.5.0 check
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> the-forgotten-island@1.5.0 test
+> node --import tsx --test tests/*.test.*
+
+✔ the real scope camera aligns both boards and has a clear central line through the near frame (1045.954434ms)
+✔ opening assets have bounded triangle counts and physical bases (55.644352ms)
+✔ both chart registrations need to coincide within the same tolerance (0.39988ms)
+✔ Inès alternates stance and swing, adjusts joints on slopes, and has four tasks (8.273829ms)
+✔ Romanian is the default for a new game and for legacy settings (3.187007ms)
+✔ Romanian translations cover every location, journal item, objective, prerequisite and wrong-answer message (1.01961ms)
+✔ Inès visits four stations, stays on walkable terrain and loops continuously (65.865197ms)
+✔ the follow camera pulls forward near a closed barrier and each new cabin has a collision footprint (0.721268ms)
+✔ map zoom keeps its center and clamps pan when zooming out (0.376099ms)
+✔ field stations are reachable with a normal character and records suppress repeat prompts (2.837ms)
+✔ three optional activity types reject wrong responses and accept valid readings (0.524423ms)
+✔ old saves are accepted and field notes are validated without altering main progress (2.482855ms)
+✔ wet forest, dark eastern basalt and southern beach have different surface weights (0.204338ms)
+✔ a fresh expedition starts ashore and has 12 objectives and 19 exploration rewards (2.240401ms)
+✔ the island is organic and approximately 500 m in each direction (14.006743ms)
+✔ a numeric code can be retried and exposes the real lens exactly once (0.568786ms)
+✔ components and evidence can be collected in arbitrary order (0.655045ms)
+✔ the archive cannot be read, discovered or walked through early (0.785088ms)
+✔ the tower has a continuous stair route up to the sighting level (1.538939ms)
+✔ loading validates saves and rejects invalid positions, arbitrary inventory and gate flags (1.826853ms)
+✔ a full expedition round-trips its position, six puzzles and ending (0.563582ms)
+✔ all 37 discoveries have a valid approach, including early and late archive states (16.278456ms)
+✔ all core trail segments are connected through valid walking terrain (39.972165ms)
+✔ both built ranging boards align with the scope when seen from the tower (0.262925ms)
+✔ the procedural scene builds complete finite geometry and instance buffers (1240.389121ms)
+✔ the archive gate moves when the save marks the tide puzzle solved (134.955618ms)
+✔ the surveyor and playable avatar build and the surveyor moves with the expedition clock (15.255157ms)
+✔ habitat geology, plant patches and local wildlife integrate into the scene (94.332811ms)
+✔ every palm and broadleaf or conifer has a solid base, with four distinct non-palm species (11.622709ms)
+✔ each crown uses its own populated texture tile, including its lower-distance model (103.358609ms)
+✔ large scattered boulders and landmarks use the same placements for drawing and collision (2.54516ms)
+✔ a sprint step cannot tunnel; oblique movement can slide and go around (3.524919ms)
+✔ an older save inside a new trunk recovers on the same beach without losing its journal (1.140104ms)
+✔ the coastal mesh follows the terrain and closes its seam at both quality settings (68.776698ms)
+✔ swells displace vertices and breaking crests move toward land over time (0.969269ms)
+✔ Romanian game controls solve four mechanisms after wrong attempts, and the ending stays gated (517.703804ms)
+✔ localized map controls zoom, center and return to an unpannable overview (35.322936ms)
+✔ optional tide gauge can be read fully through Romanian interface controls (40.823172ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3067.784373
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> the-forgotten-island@1.5.0 build
+> tsc --noEmit && vite build && node scripts/standalone.mjs
+
+vite v7.3.8 building client environment for production...
+transforming...
+✓ 637 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     0.46 kB │ gzip:     0.31 kB
+dist/THIRD_PARTY_NOTICES.md        10.14 kB
+dist/assets/style-BSWLrxAk.css     26.35 kB │ gzip:     7.28 kB
+dist/assets/index-DZl1e1wA.js   4,249.55 kB │ gzip: 2,477.18 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.17s

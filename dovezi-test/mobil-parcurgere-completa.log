@@ -1,0 +1,196 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> the-forgotten-island@1.5.0 test:browser
+> node tests/browser.mjs
+
+tap { x: 44.59375, y: 321.65625, id: 1, name: 'Setări' } <button class="text-button">Setări</button>
+mode menu
+tap { x: 630, y: 40, id: 1, name: 'Close panel' } <button class="close-button" aria-label="Close panel">×</button>
+mode menu
+tap { x: 163, y: 251.53125, id: 1, name: 'New game →' } <button class="button primary">New game <span aria-hidden="true">→</span></button>
+mode play
+Pointer lock after starting: false
+tap { x: 526.3125, y: 30, id: 1, name: 'Map' } <button type="button" aria-label="Map" title="Map">Map</button>
+mode map
+tap { x: 782.5, y: 40, id: 1, name: 'Close panel' } <button class="close-button" aria-label="Close panel">×</button>
+mode play
+Beach frame timing Diagnostic 2D integration fixture; no WebGL FPS measured.
+tap { x: 680.6640625, y: 358, id: 1, name: 'Zoom view in' } <button type="button" aria-label="Zoom view in">＋</button>
+mode play
+tap { x: 741.9921875, y: 358, id: 1, name: 'Zoom view out' } <button type="button" aria-label="Zoom view out">−</button>
+mode play
+tap { x: 810, y: 78, id: 1, name: 'Pause' } <button type="button" aria-label="Pause" title="Pause">❚❚</button>
+mode pause
+tap { x: 630, y: 53.546875, id: 1, name: 'Close panel' } <button class="close-button" aria-label="Close panel">×</button>
+mode play
+All directions, simultaneous movement/look, release, zoom and orientation passed.
+tap { x: 810, y: 78, id: 1, name: 'Pause' } <button type="button" aria-label="Pause" title="Pause">❚❚</button>
+mode pause
+tap { x: 422, y: 329.453125, id: 1, name: 'Save and return to title' } <button class="text-button">Save and return to title</button>
+mode menu
+tap { x: 163, y: 280.03125, id: 1, name: 'New game →' } <button class="button secondary">New game <span aria-hidden="true">→</span></button>
+mode menu
+tap { x: 214.2421875, y: 245.9375, id: 1, name: 'Start new game' } <button class="button primary">Start new game</button>
+mode play
+tap { x: 742, y: 254, id: 1, name: 'Talk to Inès' } <button type="button">Talk to Inès</button>
+mode npc
+tap { x: 251.0078125, y: 295.015625, id: 1, name: 'Close conversation' } <button class="button paper-button">Close conversation</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Examine · The survey skiff' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Examine · The survey skiff" data-target="wreck">Examine · The survey skiff</button>
+mode item
+tap { x: 254.7890625, y: 295.015625, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 810, y: 30, id: 1, name: 'Camera' } <button type="button" aria-label="Camera" title="Camera">◉</button>
+mode play
+tap { x: 810, y: 30, id: 1, name: 'Camera' } <button type="button" aria-label="Camera" title="Camera" data-last-touch="16169">◉</button>
+mode play
+tap { x: 526.3125, y: 30, id: 1, name: 'Map' } <button type="button" aria-label="Map" title="Map">Map</button>
+mode map
+tap { x: 528.5, y: 118.90625, id: 1, name: 'Zoom in' } <button aria-label="Zoom in">+</button>
+mode map
+tap { x: 576.5, y: 118.90625, id: 1, name: 'Center map' } <button aria-label="Center map">⌖</button>
+mode map
+tap { x: 782.5, y: 40, id: 1, name: 'Close panel' } <button class="close-button" aria-label="Close panel">×</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Landing log · 4 June 1986' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Landing log · 4 June 1986" data-target="landing">Read · Landing log · 4 June 1986</button>
+mode item
+tap { x: 254.7890625, y: 310.046875, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Evacuation dispatch' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Evacuation dispatch" data-target="dispatch">Read · Evacuation dispatch</button>
+mode item
+tap { x: 254.7890625, y: 295.015625, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Equipment roster' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Equipment roster" data-target="roster">Read · Equipment roster</button>
+mode item
+tap { x: 254.7890625, y: 357.046875, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Open · Survey lockbox' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Open · Survey lockbox" data-target="lockbox">Open · Survey lockbox</button>
+mode item
+tap { x: 591.3671875, y: 275.0625, id: 1, name: '4' } <button type="button">4</button>
+mode item
+tap { x: 455.0078125, y: 325.0625, id: 1, name: '7' } <button type="button">7</button>
+mode item
+tap { x: 500.4609375, y: 275.0625, id: 1, name: '2' } <button type="button">2</button>
+mode item
+tap { x: 282.140625, y: 357.0625, id: 1, name: 'Turn latch' } <button class="button primary">Turn latch</button>
+mode item
+tap { x: 204.28125, y: 297.03125, id: 1, name: 'Return to the island' } <button class="text-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Collect · Scope lens' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Collect · Scope lens" data-target="lens">Collect · Scope lens</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Keeper’s survey · 1893' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Keeper’s survey · 1893" data-last-touch="96189" data-target="keeper">Read · Keeper’s survey · 1893</button>
+mode item
+tap { x: 254.7890625, y: 295.015625, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Collect · Indicator lamp' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Collect · Indicator lamp" data-target="lamp">Collect · Indicator lamp</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Semaphore relief' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Semaphore relief" data-last-touch="146060" data-target="relief">Read · Semaphore relief</button>
+mode item
+tap { x: 254.7890625, y: 295.015625, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Operate · Semaphore relay' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Operate · Semaphore relay" data-target="relay">Operate · Semaphore relay</button>
+mode item
+tap { x: 209.375, y: 253.359375, id: 1, name: 'Rising air' } <span>△</span>
+mode item
+tap { x: 351.125, y: 253.359375, id: 1, name: 'Full sun' } <span>○</span>
+mode item
+tap { x: 492.875, y: 253.359375, id: 1, name: 'Falling tide' } <span>≋</span>
+mode item
+tap { x: 639.90625, y: 325.65625, id: 1, name: 'Engage relay' } <button class="button primary">Engage relay</button>
+mode item
+tap { x: 204.28125, y: 297.03125, id: 1, name: 'Return to the island' } <button class="text-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Scope operator’s card' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Scope operator’s card" data-target="tower-log">Read · Scope operator’s card</button>
+mode item
+tap { x: 254.7890625, y: 357.046875, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 579.390625, y: 30, id: 1, name: 'Journal' } <button type="button" aria-label="Journal" title="Journal">Journal</button>
+mode journal
+tap { x: 130.5, y: 356.90625, id: 1, name: 'Scope operator’s card' } <button class="journal-entry">Scope operator’s card</button>
+mode journal
+tap { x: 782.5, y: 40, id: 1, name: 'Close panel' } <button class="close-button" aria-label="Close panel">×</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Operate · Scope service panel' } <button type="button" class="touch-use" data-testid="touch-use" data-target="repair" aria-label="Operate · Scope service panel">Operate · Scope service panel</button>
+mode item
+tap { x: 280.25, y: 178.0625, id: 1, name: 'Objective lens' } <button class="" aria-pressed="false">Objective lens</button>
+mode item
+tap {
+  x: 280.25,
+  y: 240.0625,
+  id: 1,
+  name: 'Wide front collarEmpty socket'
+} <button><b>Wide front collar</b><span>Empty socket</span></button>
+mode item
+tap { x: 563.75, y: 178.0625, id: 1, name: 'Indicator lamp' } <button class="" aria-pressed="false">Indicator lamp</button>
+mode item
+tap { x: 563.75, y: 240.0625, id: 1, name: 'Reticle socketEmpty socket' } <button><b>Reticle socket</b><span>Empty socket</span></button>
+mode item
+tap { x: 636.2109375, y: 305.0625, id: 1, name: 'Test assembly' } <button class="button primary">Test assembly</button>
+mode item
+tap { x: 204.28125, y: 297.03125, id: 1, name: 'Return to the island' } <button class="text-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Operate · Ranging scope' } <button type="button" class="touch-use" data-testid="touch-use" data-target="sight" aria-label="Operate · Ranging scope">Operate · Ranging scope</button>
+mode item
+tap { x: 607.7109375, y: 306, id: 1, name: 'Confirm alignment' } <button class="button primary">Confirm alignment</button>
+mode item
+tap { x: 204.28125, y: 297.03125, id: 1, name: 'Return to the island' } <button class="text-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Operate · East survey slate' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Operate · East survey slate" data-target="bearing">Operate · East survey slate</button>
+mode item
+tap { x: 492.875, y: 357.0625, id: 1, name: 'ESE' } <button class="" aria-pressed="false">ESE</button>
+mode item
+tap { x: 631.8828125, y: 357.0625, id: 1, name: 'Record bearing' } <button class="button primary">Record bearing</button>
+mode item
+tap { x: 204.28125, y: 297.03125, id: 1, name: 'Return to the island' } <button class="text-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Tide wheel instructions' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Tide wheel instructions" data-target="coast-note">Read · Tide wheel instructions</button>
+mode item
+tap { x: 254.7890625, y: 295.015625, id: 1, name: 'Return to the island' } <button class="button paper-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Operate · Archive tide wheel' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Operate · Archive tide wheel" data-target="tide">Operate · Archive tide wheel</button>
+mode item
+tap { x: 492.875, y: 200.53125, id: 1, name: '↘Ebb' } <span>↘</span>
+mode item
+tap { x: 635.5859375, y: 272.828125, id: 1, name: 'Set tide wheel' } <button class="button primary">Set tide wheel</button>
+mode item
+tap { x: 204.28125, y: 297.03125, id: 1, name: 'Return to the island' } <button class="text-button">Return to the island</button>
+mode play
+tap { x: 742, y: 306, id: 1, name: 'Read · Mara’s final dispatch' } <button type="button" class="touch-use" data-testid="touch-use" aria-label="Read · Mara’s final dispatch" data-target="final">Read · Mara’s final dispatch</button>
+mode item
+tap { x: 228.0390625, y: 356.703125, id: 1, name: 'Compare the charts' } <button class="button primary">Compare the charts</button>
+mode item
+tap { x: 255.3671875, y: 357.234375, id: 1, name: 'Close expedition log' } <button class="button paper-button">Close expedition log</button>
+mode victory
+First playthrough complete THE FORGOTTEN ISLAND
+The island is back on the chart
+×
+
+The archive preserves nearly a century of coastal observations. With Mara’s dispatch and the original chart, the island can finally be recorded again.
+
+Completion
+44%
+Expedition time
+5m 47s
+Puzzles solved
+6/6
+Artifacts recovered
+0/10
+Hidden places
+0/4
+Viewpoints
+0/5
+Keep exploring
+New game
+tap { x: 211.4609375, y: 342.5625, id: 1, name: 'Keep exploring' } <button class="button primary">Keep exploring</button>
+mode play
+tap { x: 579.390625, y: 30, id: 1, name: 'Journal' } <button type="button" aria-label="Journal" title="Journal">Journal</button>
+mode journal
+tap { x: 782.5, y: 40, id: 1, name: 'Close panel' } <button class="close-button" aria-label="Close panel">×</button>
+mode play
+tap { x: 810, y: 78, id: 1, name: 'Pause' } <button type="button" aria-label="Pause" title="Pause">❚❚</button>
+mode pause
+tap { x: 422, y: 356.90625, id: 1, name: 'Save and return to title' } <button class="text-button">Save and return to title</button>
+mode menu
+tap { x: 163, y: 223.03125, id: 1, name: 'Continue →' } <button class="button primary">Continue <span aria-hidden="true">→</span></button>
+mode play
+Touch-only expedition finished all six puzzles and resumed its finished save.

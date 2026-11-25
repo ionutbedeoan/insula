@@ -1,0 +1,2 @@
+Skipping host requirements validation logic because `PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS` env variable is set.
+WebKit on Linux in mobile emulation entered the actual WebGL 2 game with four buttons.
