@@ -593,4 +593,15 @@ async function play(){
   await ready()
   assert.match(await page.locator('.objective').innerText(),/EXPEDITION COMPLETE/)
   console.log('Species observation and photograph persisted until the end of the second expedition.')
-  console.log(
+  console.log('Second playthrough complete. Early access, wrong answers, restart, reload, and continued exploration checked.')
+}
+try{
+  await play()
+  assert.deepEqual(errors,[],'Unexpected browser errors')
+}catch(error){
+  await picture('failure').catch(()=>{})
+  console.error('Browser errors',errors)
+  throw error
+}finally{
+  await browser.close()
+}

@@ -100,4 +100,6 @@ const romanian:Record<string,string>={
   'Arrival Beach':'Plaja Debarcării','The expedition landing':'Locul debarcării expediției','Palm Forest':'Pădurea de Palmieri','Old cut through the palms':'Poteca veche dintre palmieri',
   'Expedition Camp':'Tabăra Expediției','Survey station · 1986':'Stație topografică · 1986','Hidden Waterfall':'Cascada Ascunsă','Keeper’s water supply':'Sursa de apă a paznicului',
   'Signal Ruins':'Ruinele Semaforului','The 1893 tide semaphore':'Semaforul mareelor din 1893','Observation Tower':'Turnul de Observație','Optical survey platform':'Platforma de măsurători optice',
-  'Rocky Coast':'Coasta Stâncoasă','The east shore transect':'Traseul de măsurare al coastei de est','Research Chamber':'Camera 
+  'Rocky Coast':'Coasta Stâncoasă','The east shore transect':'Traseul de măsurare al coastei de est','Research Chamber':'Camera de Cercetare','Secure tidal archive':'Arhiva protejată a mareelor',
+}
+export const compassPoints=(language:Language)=>language==='ro'?['N','NE','E','SE','S','SV','V','NV']:['N','NE','E','SE','S','SW','W','NW']

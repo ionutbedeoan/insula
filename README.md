@@ -4,7 +4,7 @@ Un joc de explorare fără violență, în care refaci traseul unei expediții t
 
 ## Cum pornești jocul
 
-Descarcă și deschide **The-Forgotten-Island.html** într-un browser desktop cu WebGL 2. Jocul, modelele și sunetele sunt incluse în fișier. Dacă browserul restricționează accesul la salvare pentru fișiere locale, pornește proiectul prin Vite. Prima alegere în setările grafice este **Medie**. Presetul **Scăzută** reduce rezoluția și vegetația de la nivelul solului.
+Deschide **The-Forgotten-Island-Mobile.html** într-un browser desktop cu WebGL 2. Jocul, modelele și sunetele sunt incluse în fișier. Dacă browserul restricționează accesul la salvare pentru fișiere locale, pornește proiectul prin Vite. Calitatea grafică pornește pe **Ridicată** pe desktop și pe telefon. Opțiunile salvate au prioritate. Presetul **Scăzută** reduce rezoluția și vegetația de la nivelul solului.
 
 | Comandă | Acțiune |
 | --- | --- |
@@ -22,6 +22,8 @@ Descarcă și deschide **The-Forgotten-Island.html** într-un browser desktop cu
 
 Inès Vidal începe lângă barcă. Urmează singură potecile, se oprește să ia notițe și revine pe coastă. Cu **M** îi poți vedea poziția cât timp se află în apropiere. Pe hartă poți mări cu rotița sau cu butoanele și poți deplasa imaginea prin tragere. Salvarea preia progresul din versiunea anterioară atunci când rulezi pe aceeași origine în browser.
 
+Panoul **Următorul pas** afișează automat indiciile de pe plajă și până la deschiderea casetei din tabără. Poți comuta afișarea indiciilor oricând cu **H** sau cu butonul **?** pe telefon.
+
 Pe traseu găsești trei observații de faună, două stații de fotografie și un jalon de maree. Sunt activități opționale, cu progres salvat separat în carnet. Caută diamantele de pe hartă. Pădurea umedă, ravena, coasta vulcanică și plaja sudică au vegetație și materiale distincte.
 
 ## Pe telefon
@@ -31,7 +33,7 @@ Pornește jocul într-un browser cu WebGL 2. Modul tactil se activează automat 
 - Ține apăsate săgețile mari pentru mers înainte, înapoi și lateral. Glisează cu celălalt deget pe scenă pentru a privi în jur.
 - Butonul auriu din dreapta preia acțiunea tastei **E**. Textul arată ce poți examina, deschide sau lua. Butoanele separate apar când poți vorbi cu Inès sau când este disponibilă o observație de teren.
 - Folosește **+ / −** pentru zoom-ul camerei și **↥** pentru săritură. Harta, jurnalul, inventarul și pauza au butoane proprii.
-- Caseta folosește o tastatură numerică pe ecran. Luneta și foaia din arhivă se pot trage cu degetul. Setările mobile aleg automat presetul **Mobil** la prima pornire.
+- Caseta folosește o tastatură numerică pe ecran. Luneta și foaia din arhivă se pot trage cu degetul. Dacă mișcarea sacadează, alege presetul **Mobil** din setările grafice.
 
 Dacă aplicația Fișiere afișează HTML-ul doar ca previzualizare, pornește proiectul pe calculator:
 
@@ -40,7 +42,7 @@ npm install
 npm run dev -- --host 0.0.0.0
 ```
 
-Conectează telefonul și calculatorul la aceeași rețea Wi-Fi și deschide pe telefon adresa **Network** afișată de Vite. Folosește aceeași adresă la revenirea în joc pentru a păstra accesul la salvarea locală. Fișierul HTML original de desktop rămâne în ediția 1.4.
+Conectează telefonul și calculatorul la aceeași rețea Wi-Fi și deschide pe telefon adresa **Network** afișată de Vite. Folosește aceeași adresă la revenirea în joc pentru a păstra accesul la salvarea locală.
 
 ## Noutăți în 1.4
 

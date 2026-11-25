@@ -94,4 +94,7 @@ export function MobileControls({runtime,language,tools,interact,talk,field}:{
     </div>
     <nav className="touch-tools" aria-label={t('Controls')}>
       {tools.map(tool=><button type="button" key={tool.label} {...touchAction(tool.action)} aria-label={t(tool.label)} aria-pressed={tool.pressed}
-        title={t(tool.label)}>{tool.glyph??t
+        title={t(tool.label)}>{tool.glyph??t(tool.label)}</button>)}
+    </nav>
+  </>
+}

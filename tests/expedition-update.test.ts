@@ -85,4 +85,14 @@ test('the follow camera pulls forward near a closed barrier and each new cabin h
   const open=shoreFollowCamera(154.4,8.7,38,Math.PI/2,0,true)
   const closed=shoreFollowCamera(154.4,8.7,38,Math.PI/2,0,false)
   assert.ok(closed.separation<open.separation)
-  assert.ok(canWalk(closed.
+  assert.ok(canWalk(closed.x,closed.z,false))
+  for(const cabin of fieldCabins)assert.ok(!canWalk(cabin.x,cabin.z,false))
+})
+
+test('map zoom keeps its center and clamps pan when zooming out',()=>{
+  assert.deepEqual(mapTransform(720,1,0,0),{scale:1,x:0,y:0})
+  const zoom=mapTransform(720,2,0,0)
+  assert.equal(360*zoom.scale+zoom.x,360)
+  assert.equal(clampMapPan(999,1),0)
+  assert.equal(clampMapPan(-999,2),-360)
+})

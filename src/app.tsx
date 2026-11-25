@@ -408,4 +408,9 @@ export function App(){
             <div><dt>{t('Puzzles solved')}</dt><dd>{progress.solved.length}/6</dd></div><div><dt>{t('Artifacts recovered')}</dt><dd>{stats.relics}/{relics.length}</dd></div>
             <div><dt>{t('Hidden places')}</dt><dd>{stats.secrets}/{secrets.length}</dd></div><div><dt>{t('Viewpoints')}</dt><dd>{stats.views}/{views.length}</dd></div>
           </dl>
-          <div className="panel-actions"><button className="button primary" onClick={()=>open(null)}>{t('Keep exploring')}</button
+          <div className="panel-actions"><button className="button primary" onClick={()=>open(null)}>{t('Keep exploring')}</button><button className="text-button" onClick={askNew}>{t('New game')}</button></div>
+        </>}
+      </section>
+    </div>}
+  </main>
+}

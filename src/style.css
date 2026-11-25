@@ -347,4 +347,7 @@ kbd{font:600 11px/1.2 "Segoe UI",system-ui,sans-serif;display:inline-flex;align-
   .touch-game .menu-footer{display:none}
   .touch-game .scope-backdrop .panel{display:grid;grid-template-columns:1fr auto;gap:2px 8px}
   .touch-game .scope-backdrop .panel-actions{grid-column:1/-1;margin-top:0}
-  .touch-game .scope-backdrop .puzzle-message,.touch-game .scope-backdrop .hint-box{grid-colu
+  .touch-game .scope-backdrop .puzzle-message,.touch-game .scope-backdrop .hint-box{grid-column:1/-1}
+}
+
+.touch-optics svg{display:block;margin:auto;width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
