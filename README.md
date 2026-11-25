@@ -8,6 +8,12 @@ Deschide **The-Forgotten-Island-Mobile.html** într-un browser desktop cu WebGL 
 
 Din meniul principal, **Insula ascunsă** deschide expediția, cu opțiunile **Continuă** și **Joc nou**. **Explorează Tenerife** deschide **Ruta del Viento**, un traseu auto de 5,48 km. Apasă **Pornește la drum** pentru a prelua volanul. Din pauza oricărui mod poți reveni la meniul principal.
 
+În Tenerife, **C** schimbă camera, iar tragerea cu mouse-ul sau cu degetul schimbă unghiul. **F** permite coborârea când mașina este oprită și urcarea când ești lângă ea. Pe jos folosești **WASD**, **Shift** pentru alergare și **E** pentru descoperirile din apropiere. Pe telefon folosești săgețile și butoanele de pe ecran. Colecția se salvează local și se deschide cu **J** sau din bara de comenzi.
+
+Harta include aproximativ 2,2 km de străzi și drumuri noi în San Bruma, Caleta Sur și Lomo del Pinar. Ramificația cu pietriș din Lomo del Pinar urcă spre Cascada del Alisio. Harta extinsă arată așezările și, în timpul mersului pe jos, poziția mașinii parcate.
+
+Butonul **Pornește radioul** redă [BossaBossa, Kevin MacLeod](https://incompetech.com/music/royalty-free/index.html?Search=Search&isrc=USUAN1600055), sub [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
 | Comandă | Acțiune |
 | --- | --- |
 | WASD, Shift, Spațiu | Deplasare, alergare, săritură |

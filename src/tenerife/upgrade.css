@@ -1,0 +1,22 @@
+.tenerife-tools{display:contents}
+.drive-canvas,.drive-canvas canvas{touch-action:none}
+.drive-canvas canvas{cursor:grab}
+.drive-canvas canvas:active{cursor:grabbing}
+.tenerife-walk-status,.tenerife-collect,.tenerife-collection{position:fixed;z-index:9}
+.tenerife-walk-status{top:max(66px,calc(env(safe-area-inset-top) + 62px));right:max(16px,env(safe-area-inset-right));padding:8px 12px;background:#162925ec;border:1px solid #b1bdad61;border-radius:20px;color:#fff2d8;font-size:12px}
+.tenerife-collect{left:50%;bottom:max(86px,calc(env(safe-area-inset-bottom) + 82px));transform:translateX(-50%);max-width:60vw;min-height:44px}
+.tenerife-collection{top:max(104px,calc(env(safe-area-inset-top) + 100px));right:max(14px,env(safe-area-inset-right));width:min(330px,calc(100vw - 28px));max-height:calc(100dvh - 125px);overflow:auto;padding:17px 20px;background:#172927f5;border:1px solid #afa69387;border-radius:12px;color:#fcf3de;text-align:left;box-shadow:0 16px 45px #0007}
+.tenerife-collection ul{padding-left:18px}
+.tenerife-collection p,.tenerife-collection small{font-size:12px}
+.tenerife-tools button[aria-label$="radioul"]{font-size:11px!important;font-weight:700}
+.drive-touch .tenerife-walk-key{display:none}
+.drive-root[data-exploration="walking"] .drive-dial,.drive-root[data-exploration="walking"] .drive-steer-tools{display:none}
+@media (max-width:620px){
+  .drive-root .drive-tools{gap:4px}
+  .drive-root .drive-tools .drive-chip{width:35px;height:35px;min-width:35px;padding:0}
+  .drive-root:has(.tenerife-tools) .drive-wordmark small{display:none}
+  .drive-root:has(.tenerife-tools) .drive-wordmark{font-size:10px;letter-spacing:.035em;gap:4px}
+}
+@media (max-width:365px){
+  .drive-root:has(.tenerife-tools) .drive-wordmark span:last-child{display:none}
+}
