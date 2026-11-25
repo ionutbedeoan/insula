@@ -6,6 +6,8 @@ Un joc de explorare fără violență, în care refaci traseul unei expediții t
 
 Deschide **The-Forgotten-Island-Mobile.html** într-un browser desktop cu WebGL 2. Jocul, modelele și sunetele sunt incluse în fișier. Dacă browserul restricționează accesul la salvare pentru fișiere locale, pornește proiectul prin Vite. Calitatea grafică pornește pe **Ridicată** pe desktop și pe telefon. Opțiunile salvate au prioritate. Presetul **Scăzută** reduce rezoluția și vegetația de la nivelul solului.
 
+Din meniul principal, **Insula ascunsă** deschide expediția, cu opțiunile **Continuă** și **Joc nou**. **Explorează Tenerife** deschide **Ruta del Viento**, un traseu auto de 5,48 km. Apasă **Pornește la drum** pentru a prelua volanul. Din pauza oricărui mod poți reveni la meniul principal.
+
 | Comandă | Acțiune |
 | --- | --- |
 | WASD, Shift, Spațiu | Deplasare, alergare, săritură |

@@ -1,0 +1,22 @@
+INSULA UITATĂ
+Ruta del Viento · 5,48 km
+
+Pe laptop deschide dist/The-Forgotten-Island.html în Chrome, Edge sau Firefox.
+În meniu alege „Tur auto · Ruta del Viento”.
+
+Pe iPhone sau Android
+1. Dezarchivează dosarul pe calculator.
+2. Pe Windows deschide Start-Tenerife.cmd. Calculatorul are nevoie de Node.js.
+   Pe macOS și Linux poți rula node scripts/drive-lan.mjs din acest dosar.
+3. Conectează telefonul și calculatorul la aceeași rețea Wi-Fi.
+4. Deschide în Chrome sau Safari adresa marcată Telefon, cu http://, din fereastra de pe calculator.
+5. Lasă fereastra deschisă cât timp joci.
+
+Pe calculator poți folosi WASD sau săgețile. Space frânează, C schimbă camera,
+M arată harta, R readuce mașina pe drum și Escape pune pauză.
+
+Pe telefon ai direcția în stânga și pedalele în dreapta. Ține apăsat ↓ după
+ce mașina se oprește pentru a merge în marșarier. Butonul pătrat frânează ferm.
+Poți conduce în orientare verticală sau pe orizontală.
+
+Progresul expediției și recordul turei sunt salvate local în browser.

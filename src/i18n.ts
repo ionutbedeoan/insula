@@ -11,6 +11,8 @@ const romanian:Record<string,string>={
   'Start a new expedition?':'Începi o expediție nouă?','The island is back on the chart':'Insula a revenit pe hartă',
   'Added to your inventory.':'Adăugat în inventar.','Viewpoint charted.':'Belvedere marcată pe hartă.','Hidden location charted.':'Loc ascuns marcat pe hartă.','Expedition artifact recovered.':'Ai recuperat un obiect al expediției.',
   'Main menu':'Meniu principal','The Forgotten':'Insula','Island':'uitată','The Forgotten Island':'Insula uitată',
+  'Hidden Island':'Insula ascunsă','Explore Tenerife':'Explorează Tenerife',
+  'Ruta del Viento could not be loaded.':'Ruta del Viento nu s-a putut încărca.',
   'Follow the clues left by a 1986 expedition and find out why the island disappeared from maps.':'Urmărește indiciile lăsate de expediția din 1986 și află de ce insula a dispărut de pe hărți.',
   'Continue':'Continuă','New game':'Joc nou','Single-player exploration':'Explorare pentru un jucător','Keyboard & mouse':'Tastatură și mouse',
   'Drag the lens to turn the scope':'Trage de lentilă pentru a roti luneta',

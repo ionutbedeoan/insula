@@ -21,6 +21,9 @@ class IslandAudio {
       if(this.ctx?.state==='suspended') await this.ctx.resume()
     } catch { /* Gameplay remains available on browsers with audio disabled. */ }
   }
+  suspend(){
+    void this.ctx?.suspend().catch(()=>{})
+  }
   private build(){
     const ctx=new AudioContext()
     this.ctx=ctx

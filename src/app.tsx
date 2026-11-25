@@ -39,7 +39,7 @@ class SceneBoundary extends Component<{children:ReactNode; onError:()=>void},{fa
   render(){return this.state.failed?<div className="scene-error"/>:this.props.children}
 }
 
-export function App(){
+export function App({focusTenerife,onExploreTenerife}:{focusTenerife:boolean;onExploreTenerife:()=>void}){
   const [device]=useState(touchDevice)
   const [progress,setProgress]=useState<Progress>(()=>initialSave()??emptyProgress())
   const p=useRef(progress)
@@ -51,6 +51,7 @@ export function App(){
   const [failed,setFailed]=useState(false)
   const [saved,setSaved]=useState(()=>Boolean(initialSave()))
   const [started,setStarted]=useState(false)
+  const [islandMenu,setIslandMenu]=useState(false)
   const [panel,setPanel]=useState<Panel>(null)
   const [item,setItem]=useState<Item|null>(null)
   const [scopeHeading,setScopeHeading]=useState<number>(scopeStop.initial)
@@ -68,6 +69,7 @@ export function App(){
   const surface=useRef<HTMLCanvasElement|null>(null)
   const compass=useRef<HTMLDivElement>(null)
   const toastTimer=useRef<number|undefined>(undefined)
+  const restoreIslandButton=useRef(false)
   const isLive=started && !panel && !failed
   const live=useRef(isLive)
   live.current=isLive
@@ -240,8 +242,13 @@ export function App(){
 
   const configure=(next:'settings'|'controls')=>{lastPanel.current=panel;open(next)}
   const askNew=()=>{if(saved){resetBack.current=panel;open('reset')}else start(true)}
+  const toMainMenu=()=>{
+    restoreIslandButton.current=true
+    setIslandMenu(false)
+  }
   const toMenu=()=>{
     save();setStarted(false);dropCapture();setPanel(null);setToast(null);setHintOverride(null)
+    toMainMenu()
   }
   const onPlace=(id:PlaceId)=>{
     const next=discover(p.current,id)
@@ -264,15 +271,24 @@ export function App(){
         onCaptureExit:()=>{if(live.current)open('pause')}
       }}
     /></SceneBoundary>
-    {!started&&<section className="main-menu" aria-label={t("Main menu")}>
+    {!started&&<section className="main-menu" aria-label={t(islandMenu?'Hidden Island':'Main menu')}>
       <div className="menu-content">
         <div className="menu-rule" aria-hidden="true"><span>✦</span></div>
         <h1><span>{t('The Forgotten')}</span><strong>{t('Island')}</strong></h1>
         <p className="menu-intro">{t('Follow the clues left by a 1986 expedition and find out why the island disappeared from maps.')}</p>
         <div className="menu-actions">
-          {saved&&<button className="button primary" disabled={!loaded} onClick={()=>start(false)}>{t('Continue')} <span aria-hidden="true">→</span></button>}
-          <button className={'button '+(saved?'secondary':'primary')} disabled={!loaded} onClick={askNew}>{t('New game')} <span aria-hidden="true">→</span></button>
-          <div className="submenu"><button className="text-button" onClick={()=>configure('settings')}>{t('Settings')}</button><button className="text-button" onClick={()=>configure('controls')}>{t('Controls')}</button></div>
+          {islandMenu?<>
+            {saved&&<button key="continue" className="button primary" disabled={!loaded} onClick={()=>start(false)}>{t('Continue')} <span aria-hidden="true">→</span></button>}
+            <button key="new" className={'button '+(saved?'secondary':'primary')} disabled={!loaded} onClick={askNew}>{t('New game')} <span aria-hidden="true">→</span></button>
+          </>:<>
+            <button key="island" className="button primary" autoFocus={restoreIslandButton.current} onClick={()=>setIslandMenu(true)}>{t('Hidden Island')} <span aria-hidden="true">→</span></button>
+            <button key="tenerife" className="button secondary" autoFocus={focusTenerife&&!restoreIslandButton.current} onClick={onExploreTenerife}>{t('Explore Tenerife')} <span aria-hidden="true">→</span></button>
+          </>}
+          <div className="submenu">
+            {islandMenu&&<button className="text-button" autoFocus onClick={toMainMenu}>{t('Main menu')}</button>}
+            <button className="text-button" onClick={()=>configure('settings')}>{t('Settings')}</button>
+            <button className="text-button" onClick={()=>configure('controls')}>{t('Controls')}</button>
+          </div>
         </div>
       </div>
       <div className="menu-footer"><span>{t('Single-player exploration')}</span><span>{t(device?'Touch controls':'Keyboard & mouse')}</span></div>

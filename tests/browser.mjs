@@ -334,6 +334,7 @@ async function finish(withPictures){
     await escape()
     await ready()
     await page.reload()
+    await click('Hidden Island')
     await click('Continue')
     await releaseUsingMap()
     await inspect('final')
@@ -368,7 +369,9 @@ async function metrics(){
 
 async function play(){
   await page.goto(url)
-  await button('Joc nou').waitFor()
+  await button('Insula ascunsă').waitFor()
+  await button('Explorează Tenerife').waitFor()
+  await click('Insula ascunsă')
   assert.equal(await page.locator('html').getAttribute('lang'),'ro')
   if(staticBuild){
     await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.includes('Joc nou')&&!b.disabled))
@@ -449,6 +452,7 @@ async function play(){
   if(mobile){
     await click('Pause')
     await click('Save and return to title')
+    await click('Hidden Island')
     await click('New game')
     await click('Start new game')
     await ready()
@@ -512,6 +516,7 @@ async function play(){
     await click('Pause')
     await click('Save and return to title')
     await page.reload()
+    await click('Hidden Island')
     await click('Continue')
     await ready()
     assert.match(await page.locator('.objective').innerText(),/EXPEDITION COMPLETE/)
@@ -555,6 +560,7 @@ async function play(){
   assert.ok((await pose()).x<157.1,'The locked physical gate blocks entry')
   const beforeReload=await pose()
   await page.reload()
+  await click('Hidden Island')
   await click('Continue')
   await releaseUsingMap()
   const afterReload=await pose()
