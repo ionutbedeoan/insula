@@ -9,7 +9,7 @@ const firstRound=Number(process.env.TENERIFE_FIRST_ROUND??1)
 const profiles=process.env.TENERIFE_PROFILE?[process.env.TENERIFE_PROFILE]:['desktop','mobile']
 const browser=await chromium.launch({
   channel:process.env.TENERIFE_BROWSER??'msedge',
-  args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']
+  args:process.env.TENERIFE_GPU==='1'?[]:['--use-angle=swiftshader','--enable-unsafe-swiftshader']
 })
 try {
   for(let round=firstRound;round<=rounds;round++){
@@ -131,7 +131,11 @@ try {
           await frame.locator('[data-car-speed]:not([data-car-speed="0.0000"])').waitFor()
         }finally{await move(false)}
         await press(button('Hartă traseu'))
-        await frame.getByRole('dialog',{name:'Harta traseului'}).getByText('Caleta Sur',{exact:true}).waitFor()
+        const map=frame.getByRole('dialog',{name:'Harta traseului'})
+        for(const landmark of ['Caleta Sur','Puerto Bruma','Lago del Alisio','Volcán del Viento']){
+          await map.getByText(landmark,{exact:true}).waitFor()
+        }
+        assert.equal(await map.locator('svg ellipse').count(),4)
         await press(button('Înapoi la volan'))
         await press(button('Pune pauză'))
         await press(button('Meniu principal'))

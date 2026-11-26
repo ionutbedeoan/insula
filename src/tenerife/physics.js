@@ -1,4 +1,6 @@
-// Uses the route's road-adjusted terrain sampler, including on junctions.
+const tenerifeChassis = [[0, 0], [-.96, 0], [.96, 0], [-.86, -2.24], [.86, -2.24], [-.86, 2.24], [.86, 2.24]];
+
+// Keep the tire contact points and underbody above the rendered surface.
 function tenerifeGroundCar(car, dt, heightAt) {
   const forwardX = Math.sin(car.heading);
   const forwardZ = -Math.cos(car.heading);
@@ -6,10 +8,8 @@ function tenerifeGroundCar(car, dt, heightAt) {
     car.x - forwardZ * side + forwardX * along,
     car.z + forwardX * side + forwardZ * along
   );
-  const frontLeft = surface(-.91, 1.36);
-  const frontRight = surface(.91, 1.36);
-  const backLeft = surface(-.91, -1.36);
-  const backRight = surface(.91, -1.36);
+  const frontLeft = surface(-.91, 1.36), frontRight = surface(.91, 1.36);
+  const backLeft = surface(-.91, -1.36), backRight = surface(.91, -1.36);
   const blend = 1 - Math.exp(-dt * 20);
   const limit = (angle, bound) => Math.max(-bound, Math.min(bound, angle));
   const pitch = limit(Math.atan2(frontLeft + frontRight - backLeft - backRight, 5.44), .42);
@@ -20,13 +20,14 @@ function tenerifeGroundCar(car, dt, heightAt) {
   car.groundRoll = car.roll;
   const slopeAhead = Math.sin(car.pitch) * Math.cos(car.roll);
   const slopeRight = -Math.sin(car.roll);
-  let floor = surface(0, 0);
-  for (const side of [-.91, .91]) {
-    for (const along of [-2.24, -1.36, 0, 1.36, 2.24]) {
-      const chassisClearance = Math.abs(along) === 1.36 ? .015 : .15;
-      floor = Math.max(floor, surface(side, along) - side * slopeRight - along * slopeAhead - chassisClearance);
-    }
-  }
+  let floor = Math.max(
+    frontLeft + .91 * slopeRight - 1.36 * slopeAhead,
+    frontRight - .91 * slopeRight - 1.36 * slopeAhead,
+    backLeft + .91 * slopeRight + 1.36 * slopeAhead,
+    backRight - .91 * slopeRight + 1.36 * slopeAhead,
+  ) + .012;
+  for (const [side, along] of tenerifeChassis)
+    floor = Math.max(floor, surface(side, along) - side * slopeRight - along * slopeAhead - .16);
   car.y = Math.max(floor, (car.groundY ?? floor) * (1 - blend) + floor * blend);
   car.groundY = car.y;
 }

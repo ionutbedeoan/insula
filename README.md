@@ -10,7 +10,7 @@ Din meniul principal, **Insula ascunsă** deschide expediția, cu opțiunile **C
 
 În Tenerife, **C** schimbă camera, iar tragerea cu mouse-ul sau cu degetul schimbă unghiul. **F** permite coborârea când mașina este oprită și urcarea când ești lângă ea. Pe jos folosești **WASD**, **Shift** pentru alergare și **E** pentru descoperirile din apropiere. Pe telefon folosești săgețile și butoanele de pe ecran. Colecția se salvează local și se deschide cu **J** sau din bara de comenzi.
 
-Harta include aproximativ 2,2 km de străzi și drumuri noi în San Bruma, Caleta Sur și Lomo del Pinar. Ramificația cu pietriș din Lomo del Pinar urcă spre Cascada del Alisio. Harta extinsă arată așezările și, în timpul mersului pe jos, poziția mașinii parcate.
+Harta extinsă include 21 de segmente de drum, inclusiv legăturile dintre San Bruma și Puerto Bruma și ramificațiile către coastă și lacuri. Relieful include două masive împădurite, craterul Volcán del Viento, falezele Acantilados del Poniente, plaje cu nisip negru și patru bazine. La mersul pe jos, harta arată și poziția mașinii parcate.
 
 Butonul **Pornește radioul** redă [BossaBossa, Kevin MacLeod](https://incompetech.com/music/royalty-free/index.html?Search=Search&isrc=USUAN1600055), sub [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
@@ -84,9 +84,17 @@ npm test
 npm run build
 ```
 
-Versiunea portabilă se află în `dist/The-Forgotten-Island.html`. Arhiva include și o copie la rădăcină. Notele de licență se găsesc în build.
+Buildul scrie versiunea portabilă în `dist/The-Forgotten-Island.html` și actualizează `The-Forgotten-Island-Mobile.html` la rădăcină. Notele de licență se găsesc în build.
+
+Pentru un site static, publică întregul director `dist/` și deschide `index.html`. Pentru joc în rețeaua locală, pornește `Ruta-del-Viento/Start-Tenerife.cmd` și deschide adresa afișată pe telefon.
+
+## Unity pe Windows
+
+Deschide proiectul [Ruta-del-Viento-Desktop](Ruta-del-Viento-Desktop/) în Unity Hub. Din **Tenerife → Deschide scena** poți porni **Explorează Tenerife** cu **Play**. Comanda **Tenerife → Build Windows** generează executabilul scenei în `Builds/Windows-Tenerife/`.
 
 ## Verificare în browser și randări de inspecție
+
+Pentru Tenerife, rulează `node tests/tenerife-route.mjs` după build. Testul verifică poziția roților pe cele 21 de drumuri, parcurge traseul principal în simulare și măsoară timpii între cadre în patru zone.
 
 Cu serverul local pornit, instalează Chromium pentru Playwright prin `npx playwright install chromium` și rulează `npm run test:browser`. Poți seta `ISLAND_HEADED=1` pentru a urmări parcurgerile și `ISLAND_TEST_URL` pentru un port diferit. Testul folosește comenzile jocului, inclusiv mersul, documentele, puzzle-urile, harta, dialogul lui Inès și carnetul naturalistului. Detaliile despre executarea testelor din această ediție se găsesc în **TEST_REPORT.md**. Pentru verificarea interfeței și comenzilor în Firefox fără WebGL:
 

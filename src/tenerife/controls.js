@@ -41,7 +41,7 @@ function TenerifeControls({ runtime, dialog, notify }) {
       const cos = Math.cos(car.heading);
       const exits = dice.map(([side, along]) => ({ x: car.x + side * cos + along * sin, z: car.z + side * sin - along * cos }));
       const spot = exits.find(({ x, z }) => !tenerifePersonHits(x, z) && !xxPersonCar(x, z, car)
-        && _P(x, z) > .15 && Math.abs(_P(x, z) - car.y) < 1.1);
+        && tenerifeTerrainHeight(x, z) > .15 && Math.abs(tenerifeTerrainHeight(x, z) - car.y) < 1.1);
       if (!spot) {
         notify('Mută mașina până când poți deschide ușa.');
         return;

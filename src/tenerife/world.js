@@ -77,12 +77,18 @@ function TenerifeWorldDetails() {
   rs(({ clock }) => { if (water.current) uniforms.time.value = clock.elapsedTime; });
   const { x, z, base, height } = falls;
   return E.jsxs('group', { children: [
-    E.jsxs('mesh', { position: [x + 1.9, base + height * .42, z], scale: [4.2, height, 10], rotation: [.08, .1, .09], children: [
-      E.jsx('dodecahedronGeometry', { args: [.72, 1] }),
-      E.jsx('meshStandardMaterial', { color: '#4a4d45', roughness: .93 })
-    ] }),
-    E.jsxs('mesh', { position: [x - .66, base + height * .56, z], rotation: [0, Math.PI / 2, -.055], children: [
-      E.jsx('planeGeometry', { args: [3.1, height * 1.1, 4, 8] }),
+    ...[
+      [1.62,.49,-2.3,5.1,1.06,5.2,.09],
+      [2.34,.42,2.45,6.8,.98,5.4,-.18],
+      [1.12,.12,3.35,4.1,.33,3.8,.16],
+      [2.1,.30,-4.43,5.6,.72,3.6,-.23],
+      [1.52,.91,.28,5.2,.17,4.25,.31],
+    ].map(([dx,dy,dz,w,h,d,angle],index)=>E.jsx('mesh', {
+      geometry:cO.rock,material:RM,position:[x+dx,base+height*dy,z+dz],
+      scale:[w,height*h,d],rotation:[.14,angle,.09],receiveShadow:true
+    },index)),
+    E.jsxs('mesh', { position: [x - 1.6, base + height * .51, z], rotation: [0, Math.PI / 2, -.041], children: [
+      E.jsx('planeGeometry', { args: [3.28, height * 1.025, 4, 8] }),
       E.jsx('shaderMaterial', {
         ref: water, uniforms, transparent: true, side: qn, depthWrite: false,
         vertexShader: 'varying vec2 streamUV; void main(){streamUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
@@ -90,17 +96,33 @@ function TenerifeWorldDetails() {
           varying vec2 streamUV;
           void main(){
             float lane=sin(streamUV.x*105.+sin(streamUV.y*8.+time)*1.3);
+            float shoulder=cos(streamUV.x*24.+sin(streamUV.y*17.+time*2.));
             float ripple=sin(streamUV.y*47.+time*10.+lane*1.8)*sin(streamUV.y*28.+time*7.);
-            float foam=smoothstep(.22,.95,lane*.69+ripple*.31)+.55*(1.-smoothstep(0.,.23,streamUV.y));
+            float foam=smoothstep(.15,.91,lane*.52+ripple*.29+shoulder*.2)+.64*(1.-smoothstep(0.,.22,streamUV.y));
             float edge=smoothstep(0.,.15,streamUV.x)*smoothstep(0.,.15,1.-streamUV.x);
-            vec3 color=mix(vec3(.24,.49,.56),vec3(.87,.97,.97),clamp(foam,0.,1.));
-            gl_FragColor=vec4(color, (.55+.4*foam)*edge);
+            vec3 color=mix(vec3(.083,.30,.36),vec3(.79,.91,.94),clamp(foam,0.,1.));
+            gl_FragColor=vec4(color, (.51+.49*foam)*edge);
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
           }`
       })
     ] }),
-    E.jsxs('mesh', { position: [x - 2.8, base + .17, z], rotation: [-Math.PI / 2, 0, 0], scale: [8, 4.6, 1], children: [
+    E.jsxs('mesh', { position: [x - 2.8, base + .21, z], rotation: [-Math.PI / 2, 0, 0], scale: [8, 4.6, 1], children: [
       E.jsx('circleGeometry', { args: [1, 38] }),
-      E.jsx('meshPhysicalMaterial', { color: '#437d7c', roughness: .29, metalness: .21, transparent: true, opacity: .9 })
+      E.jsx('shaderMaterial', { uniforms,transparent:true,depthWrite:false,
+        vertexShader: 'varying vec2 pool; void main(){pool=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+        fragmentShader: `uniform float time;
+          varying vec2 pool;
+          void main(){
+            vec2 p=pool-vec2(.61,.50);
+            float wave=sin(length(p*vec2(1.5,1.))*97.-time*6.+.38*sin(pool.x*34.));
+            float ring=smoothstep(.51,.98,wave)*(1.-smoothstep(.21,.55,length(p)));
+            float foam=exp(-dot(p*vec2(1.8,.85),p*vec2(1.8,.85))*88.)*(.51+.3*sin(time*3.+pool.x*110.));
+            gl_FragColor=vec4(mix(vec3(.055,.20,.21),vec3(.54,.73,.72),max(foam,ring*.36)),.92);
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
+          }`
+      })
     ] })
   ] });
 }

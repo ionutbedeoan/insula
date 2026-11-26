@@ -42,14 +42,18 @@ test('a bumper corner hits buildings and small props even with the center clear'
 test('new streets add two kilometres with junctions close to the existing road elevations',()=>{
   const base=readFileSync(new URL('../Ruta-del-Viento/dist/The-Forgotten-Island.html',import.meta.url),'utf8')
   const extension=readFileSync(new URL('../src/tenerife/world.js',import.meta.url),'utf8')
+  const relief=readFileSync(new URL('../src/tenerife/relief.js',import.meta.url),'utf8')
+  const unity=JSON.parse(readFileSync(new URL('../Ruta-del-Viento-Desktop/Assets/Resources/Tenerife/Island.json',import.meta.url),'utf8'))
   const roadSource=base.slice(base.indexOf('const Vc='),base.indexOf('function Ws('))
-    .replace('DA=[xi,mF,DF,wF,CF]','DA=[xi,mF,DF,wF,CF,...tenerifeRoads(Fg,X0)]')
-  const roads=runInNewContext(extension+roadSource+';DA',{r9:CatmullRomCurve3,q:Vector3}) as {
+    .replace('DA=[xi,mF,DF,wF,CF]','DA=[xi,mF,DF,wF,CF,...tenerifeRoads(Fg,X0),...tenerifeReliefRoutes(Fg,X0)]')
+  const roads=runInNewContext(extension+relief+roadSource+';DA',{r9:CatmullRomCurve3,q:Vector3}) as {
     length:number; points:{x:number;y:number;z:number}[]
   }[]
-  assert.equal(roads.length,13)
-  assert.ok(roads.slice(5).reduce((total,road)=>total+road.length,0)>2200)
-  for(const [index,road] of roads.entries()){
+  assert.equal(roads.length,21)
+  assert.equal(unity.roads.length,roads.length)
+  for(const [index,road] of roads.entries())assert.ok(Math.abs(road.length-unity.roads[index].length)<.01)
+  assert.ok(roads.slice(5,13).reduce((total,road)=>total+road.length,0)>2200)
+  for(const [index,road] of roads.slice(0,13).entries()){
     if(index<5)continue
     for(const previous of roads.slice(0,index)){
       for(const point of road.points){

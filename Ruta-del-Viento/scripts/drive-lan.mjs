@@ -7,8 +7,8 @@ if(!Number.isInteger(port)||port<1024||port>65535){
   console.error('Alege un port între 1024 și 65535.')
   process.exit(1)
 }
-const game=await readFile(new URL('../dist/The-Forgotten-Island.html',import.meta.url)).catch(()=>{
-  console.error('Lipsește jocul compilat. Rulează npm run build sau folosește arhiva precompilată.')
+const game=await readFile(new URL('../../dist/The-Forgotten-Island.html',import.meta.url)).catch(()=>{
+  console.error('Lipsește jocul compilat. Rulează npm run build din rădăcina proiectului.')
   process.exit(1)
 })
 const supported=['/','/ruta','/favicon.ico']

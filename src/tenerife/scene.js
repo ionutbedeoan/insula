@@ -7,7 +7,8 @@ function tenerifeWalk(rt, input, dt) {
   const sin = Math.sin(person.heading);
   const cos = Math.cos(person.heading);
   const canStand = (x, z) => {
-    if (_P(x, z) < .12 || Math.abs(_P(x, z) - _P(person.x, person.z)) > .17) return false;
+    const ground = tenerifeTerrainHeight(x, z);
+    if (ground < .12 || tenerifeWetBlocked(x, z, ground) || Math.abs(ground - tenerifeTerrainHeight(person.x, person.z)) > .17) return false;
     if (Math.hypot(x - rt.car.x, z - rt.car.z) < 3 && xxPersonCar(x, z, rt.car)) return false;
     return !tenerifePersonHits(x, z);
   };
@@ -37,54 +38,82 @@ function tenerifePersonHits(x, z) {
   });
 }
 
+const tenerifePoseFields = ['x', 'y', 'z', 'heading', 'pitch', 'roll'];
+
 function wO({ runtime, onTelemetry, audio, muted, onReady }) {
-  const time = ee.useRef({ physics: 0, sample: 0, audio: 0, ready: false });
+  const time = ee.useRef({ physics: 0, sample: 0, audio: 0, ready: false, previous: {}, visual: {} });
   const input = ee.useRef({ ...KM });
   rs(({ camera }, delta) => {
-    const dt = Math.min(.12, delta);
+    const dt = Math.min(.10, delta);
     const frame = time.current;
     const rt = runtime.current;
     const car = rt.car;
+    const previous = frame.previous;
+    if (frame.car !== car || rt.resetCamera) {
+      frame.car = car;
+      frame.physics = 0;
+      for (const field of tenerifePoseFields) previous[field] = car[field];
+      previous.recoveries = car.recoveries;
+    }
     pO(rt.keys, input.current);
     if (rt.active && !rt.paused) {
       frame.physics += dt;
       while (frame.physics >= X4) {
         if (rt.walker) tenerifeWalk(rt, input.current, X4);
-        else DO(car, input.current, X4);
+        else {
+          for (const field of tenerifePoseFields) previous[field] = car[field];
+          previous.recoveries = car.recoveries;
+          DO(car, input.current, X4);
+        }
         frame.physics -= X4;
       }
+    } else frame.physics = 0;
+    const visual = frame.visual;
+    const blend = rt.active && !rt.paused && !rt.walker && previous.recoveries === car.recoveries
+      ? Math.min(1, frame.physics / X4) : 1;
+    for (const field of tenerifePoseFields) visual[field] = Ua(previous[field], car[field], blend);
+    visual.wheel = car.wheel;
+    visual.steer = car.steer;
+    visual.braking = car.braking;
+    if (blend < 1 && (visual.x !== car.x || visual.z !== car.z)) {
+      visual.groundY = visual.y;
+      visual.groundPitch = visual.pitch;
+      visual.groundRoll = visual.roll;
+      tenerifeGroundCar(visual, 0, tenerifeTerrainHeight);
     }
+    rt.visualCar = visual;
     const walker = rt.walker;
     const orbit = rt.orbit ?? 0;
     const tilt = rt.tilt ?? 0;
-    const heading = car.heading;
+    const heading = visual.heading;
     const east = Math.sin(heading);
     const north = -Math.cos(heading);
     const cockpit = rt.active && rt.camera === 1 && !walker;
     if (!rt.active) {
-      Yc.set(car.x - east * 6.25 - north * 7.05, car.y + 3.05, car.z - north * 6.25 + east * 7.05);
-      KD.set(car.x + east * 5.5 + north * 3, car.y + 1.37, car.z + north * 5.5 - east * 3);
+      Yc.set(visual.x - east * 6.25 - north * 7.05, visual.y + 3.05, visual.z - north * 6.25 + east * 7.05);
+      KD.set(visual.x + east * 5.5 + north * 3, visual.y + 1.37, visual.z + north * 5.5 - east * 3);
     } else if (walker) {
-      const y = _P(walker.x, walker.z) + 1.68;
+      const y = tenerifeTerrainHeight(walker.x, walker.z) + 1.68;
       Yc.set(walker.x, y, walker.z);
       KD.set(walker.x + Math.sin(walker.heading) * 8, y + Math.tan(walker.pitch) * 8, walker.z - Math.cos(walker.heading) * 8);
     } else if (cockpit) {
       const look = heading + Vc(orbit, -1.14, 1.14);
-      Yc.set(car.x - .34 * Math.cos(heading) + east * .36, car.y + 1.24, car.z - .34 * Math.sin(heading) + north * .36);
-      KD.set(Yc.x + Math.sin(look) * 14, Yc.y + (Math.tan(car.pitch) + tilt * .62) * 14, Yc.z - Math.cos(look) * 14);
+      Yc.set(visual.x - .34 * Math.cos(heading) + east * .36, visual.y + 1.24, visual.z - .34 * Math.sin(heading) + north * .36);
+      KD.set(Yc.x + Math.sin(look) * 14, Yc.y + (Math.tan(visual.pitch) + tilt * .62) * 14, Yc.z - Math.cos(look) * 14);
     } else {
       const panoramic = rt.camera === 2;
       const azimuth = heading + orbit;
       const distance = (panoramic ? 12.5 : 7.5) + Math.min(2, Math.abs(car.speed) * .035);
-      Yc.set(car.x - Math.sin(azimuth) * distance, car.y + (panoramic ? 6.9 : 3.05) + tilt * 4.2, car.z + Math.cos(azimuth) * distance);
-      Yc.y = Math.max(Yc.y, Ts(Yc.x, Yc.z) + 1.2);
-      KD.set(car.x, car.y + .88, car.z);
+      Yc.set(visual.x - Math.sin(azimuth) * distance, visual.y + (panoramic ? 6.9 : 3.05) + tilt * 4.2, visual.z + Math.cos(azimuth) * distance);
+      KD.set(visual.x, visual.y + .88, visual.z);
     }
-    if (rt.resetCamera || !frame.ready) camera.position.copy(Yc);
+    Yc.y = Math.max(Yc.y, tenerifeTerrainHeight(Yc.x, Yc.z) + .75);
+    if (rt.resetCamera || !frame.ready || previous.recoveries !== car.recoveries) camera.position.copy(Yc);
     else camera.position.lerp(Yc, 1 - Math.exp(-dt * (walker || cockpit ? 28 : 12)));
+    camera.position.y = Math.max(camera.position.y, tenerifeTerrainHeight(camera.position.x, camera.position.z) + .75);
     rt.resetCamera = false;
     camera.lookAt(KD);
-    if (!frame.ready) {
+    if (!frame.ready && tenerifeTerrainNearReady && tenerifeSceneryNearReady && tenerifeShadersReady) {
       frame.ready = true;
       onReady();
     }
@@ -111,8 +140,9 @@ function TenerifeCockpit({ runtime }) {
     const group = interior.current;
     if (!group) return;
     group.visible = rt.active && rt.camera === 1 && !rt.walker;
-    group.position.set(rt.car.x, rt.car.y, rt.car.z);
-    group.rotation.set(rt.car.pitch * .65, -rt.car.heading, 0, 'YXZ');
+    const car = rt.visualCar ?? rt.car;
+    group.position.set(car.x, car.y, car.z);
+    group.rotation.set(car.pitch * .65, -car.heading, 0, 'YXZ');
   });
   const panel = (position, dimensions, color, roughness = .68) => E.jsxs('mesh', { position, children: [
     E.jsx('boxGeometry', { args: dimensions }),
@@ -147,7 +177,7 @@ function TenerifeFinds({ runtime }) {
   return tenerifeFinds.map((clue, index) => E.jsxs('mesh', {
     ref: node => { markers.current[index] = node; },
     visible: false,
-    position: [clue.x, _P(clue.x, clue.z) + .57, clue.z],
+    position: [clue.x, tenerifeTerrainHeight(clue.x, clue.z) + .57, clue.z],
     children: [
       E.jsx('octahedronGeometry', { args: [.25, 0] }),
       E.jsx('meshStandardMaterial', { color: '#edc57e', emissive: '#c88b39', emissiveIntensity: .7, metalness: .3, roughness: .39 })

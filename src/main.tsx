@@ -6,9 +6,14 @@ import { Tenerife } from './tenerife.tsx'
 import './style.css'
 
 function Game(){
-  const [exploringTenerife,setExploringTenerife]=useState(false)
+  const [exploringTenerife,setExploringTenerife]=useState(()=>window.location.hash==='#drive')
   const returnFocus=useRef(false)
   if(exploringTenerife)return <Tenerife onExit={()=>{
+    if(window.location.hash==='#drive'){
+      const url=new URL(window.location.href)
+      url.hash=''
+      window.history.replaceState(null,'',url)
+    }
     returnFocus.current=true
     setExploringTenerife(false)
   }}/>

@@ -11,4 +11,6 @@ if (/\bimport\s*\(/.test(bundle)) throw new Error('Keep the offline build in a s
 const output = html
   .replace(script[0], () => '<script type="module">' + bundle.replace(/<\/script/gi, '<\\/script') + '</script>')
   .replace(css[0], () => '<style>' + styles + '</style>')
-await writeFile('dist/The-Forgotten-Island.html', output + '\n<!--\n' + notices.replace(/-->/g, '—>') + '\n-->\n')
+const standalone = output + '\n<!--\n' + notices.replace(/-->/g, '—>') + '\n-->\n'
+await writeFile('dist/The-Forgotten-Island.html', standalone)
+await writeFile('The-Forgotten-Island-Mobile.html', standalone)

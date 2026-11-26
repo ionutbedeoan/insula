@@ -1,5 +1,17 @@
 # Ruta del Viento · Windows
 
+## Explorează Tenerife
+
+Scena `Assets/Scenes/ExploreazaTenerife.unity` include ruta completă de 5,48 km, harta cu 21 de drumuri, Puerto Bruma și relieful vulcanic. În Unity Hub deschide acest proiect cu revizia `6000.6.10f1`. Din **Tenerife → Deschide scena**, apasă **Play**, apoi **Pornește la drum**.
+
+**Tenerife → Build Windows** generează `Builds/Windows-Tenerife/Exploreaza Tenerife.exe` cu modulul **Windows Build Support**. Păstrează fișierele generate împreună. Scena folosește Built-in Render Pipeline și încarcă terenul, drumurile și decorul exportate din Web, din `Assets/Resources/Tenerife/`.
+
+Folosește **F** pentru a urca sau coborî, **Shift** pentru alergare, **E** pentru a colecta, **J** pentru colecție și **Tab** pentru radio. Condusul, camerele, harta, revenirea pe traseu și pauza folosesc comenzile din tabelul de mai jos.
+
+Pentru verificare automată, lansează executabilul cu `-batchmode -force-d3d11 -tenerife-verify`. Verificarea compară contactul roților cu mesh-urile, parcurge traseul principal și raportează timpii de cadru în logul playerului.
+
+## Ruta de coastă
+
 Prototipul Unity parcurge 1.127 m din drumul original, de la Playa del Viento până la intrarea în San Bruma. Poți devia spre plajă sau intra pe străzile din Caleta Sur. Ediția Windows folosește Unity 6000.6.10f1 și Universal Render Pipeline.
 
 Ediția 0.2 folosește lumină de zi, frunze cu texturi fotografice, materiale de asfalt și nisip mai detaliate, umbre de contact sub mașină și reflexii de cer pe apă.

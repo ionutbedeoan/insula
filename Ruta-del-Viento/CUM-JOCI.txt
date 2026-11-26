@@ -1,11 +1,11 @@
 INSULA UITATĂ
 Ruta del Viento · 5,48 km
 
-Pe laptop deschide dist/The-Forgotten-Island.html în Chrome, Edge sau Firefox.
-În meniu alege „Tur auto · Ruta del Viento”.
+Pe laptop deschide The-Forgotten-Island-Mobile.html din rădăcina proiectului în
+Chrome, Edge sau Firefox. În meniu alege „Explorează Tenerife”.
 
 Pe iPhone sau Android
-1. Dezarchivează dosarul pe calculator.
+1. Păstrează acest dosar în proiect, alături de directorul dist din rădăcină.
 2. Pe Windows deschide Start-Tenerife.cmd. Calculatorul are nevoie de Node.js.
    Pe macOS și Linux poți rula node scripts/drive-lan.mjs din acest dosar.
 3. Conectează telefonul și calculatorul la aceeași rețea Wi-Fi.
