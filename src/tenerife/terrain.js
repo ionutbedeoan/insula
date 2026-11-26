@@ -3,6 +3,8 @@ const tenerifeTerrainStep = 4;
 const tenerifeTerrainRow = 40;
 const tenerifeTerrainTileSize = tenerifeTerrainStep * tenerifeTerrainRow;
 const tenerifeTerrainSamples = new Map();
+const tenerifeJunctionRoads = new WeakMap();
+let tenerifePrimaryRoad;
 let tenerifeRoadTriangles;
 let tenerifeTerrainNearReady = false;
 let tenerifeSceneryNearReady = false;
@@ -25,23 +27,70 @@ function tenerifeTerrainVertex(x, z, road) {
   return tile[index];
 }
 
-function tenerifeRoadRibbons(draw, surface) {
-  for (const road of DA) {
-    if (surface === 'shoulder') {
-      draw(road.points, -road.half - 1.15, road.half + 1.15, -.095);
-    } else if (road.surface === surface) {
-      const lanes = surface === 'asphalt' ? [-road.half, -2.8, 0, 2.8, road.half] : [-road.half, road.half];
-      for (let i = 1; i < lanes.length; i++) {
-        draw(road.points, lanes[i - 1], lanes[i], road.main ? 0 : .065, surface === 'gravel' ? 1.6 : 1);
+function tenerifePrimaryProfile(x, z, road) {
+  const main = road?.road.main ? road : Ws(x, z, true);
+  return main && {
+    height: main.y - main.distance * .012,
+    blend: 1 - tenerifeSaturate(main.road.half + .35, main.road.half + 11, main.distance),
+    main,
+  };
+}
+
+function tenerifeFitJunction(x, y, z) {
+  const profile = tenerifePrimaryProfile(x, z);
+  if (!profile?.blend) return y;
+  const pavement = tenerifeRoadHeight(tenerifePrimaryRoad ??= tenerifeIndexRoadSurfaces('main'), x, z);
+  const grade = Number.isFinite(pavement) ? pavement : profile.height;
+  return Ua(y, grade - .045, profile.blend);
+}
+
+function tenerifeJunctionPoints(road) {
+  if (!tenerifeJunctionRoads.has(road)) {
+    const points = [road.points[0]];
+    const nearMain = point => {
+      const main = Ws(point.x, point.z, true);
+      return main && main.distance < main.road.half + 14 + road.half;
+    };
+    for (let i = 1; i < road.points.length; i++) {
+      const a = road.points[i - 1], b = road.points[i];
+      if (nearMain(a) || nearMain(b)) {
+        for (const t of [1 / 3, 2 / 3]) {
+          const dx = Ua(a.dx, b.dx, t), dz = Ua(a.dz, b.dz, t);
+          const length = Math.hypot(dx, dz) || 1;
+          points.push({ x: Ua(a.x, b.x, t), z: Ua(a.z, b.z, t), y: Ua(a.y, b.y, t),
+            s: Ua(a.s, b.s, t), dx: dx / length, dz: dz / length });
+        }
       }
+      points.push(b);
+    }
+    tenerifeJunctionRoads.set(road, points);
+  }
+  return tenerifeJunctionRoads.get(road);
+}
+
+function tenerifeRoadRibbons(draw, surface, selection = 'all') {
+  for (const road of DA) {
+    const shoulder = surface === 'shoulder';
+    if (!shoulder && road.surface !== surface) continue;
+    if (selection === 'main' && (!road.main || shoulder)) continue;
+    if (selection === 'other' && road.main && !shoulder) continue;
+    const points = road.main ? road.points : tenerifeJunctionPoints(road);
+    const width = road.half + (shoulder ? 1.15 : 0);
+    const lanes = road.main
+      ? (shoulder ? [-width, width] : [-width, -2.8, 0, 2.8, width])
+      : Array.from({ length: 2 * Math.ceil(width) + 1 }, (_, i) => width * (i / Math.ceil(width) - 1));
+    for (let i = 1; i < lanes.length; i++) {
+      const lift = shoulder ? -.095 : road.main ? 0 : .065;
+      draw(points, lanes[i - 1], lanes[i], lift, surface === 'gravel' ? 1.6 : 1,
+        road.main ? undefined : tenerifeFitJunction);
     }
   }
 }
 
-function tenerifeIndexRoadSurfaces() {
+function tenerifeIndexRoadSurfaces(selection) {
   const bins = new Map();
   for (const surface of ['shoulder', 'asphalt', 'gravel']) {
-    const mesh = vg(draw => tenerifeRoadRibbons(draw, surface));
+    const mesh = vg(draw => tenerifeRoadRibbons(draw, surface, selection));
     const points = mesh.attributes.position.array;
     const triangles = mesh.index.array;
     for (let i = 0; i < triangles.length; i += 3) {
@@ -65,15 +114,9 @@ function tenerifeIndexRoadSurfaces() {
   return bins;
 }
 
-function tenerifeTerrainHeight(x, z) {
-  const step = tenerifeTerrainStep;
-  const gx = Math.floor(x / step) * step, gz = Math.floor(z / step) * step;
-  const u = (x - gx) / step, v = (z - gz) / step;
-  const east = tenerifeTerrainVertex(gx + step, gz), south = tenerifeTerrainVertex(gx, gz + step);
-  let height = u + v <= 1
-    ? (1 - u - v) * tenerifeTerrainVertex(gx, gz) + u * east + v * south
-    : (u + v - 1) * tenerifeTerrainVertex(gx + step, gz + step) + (1 - v) * east + (1 - u) * south;
-  const road = (tenerifeRoadTriangles ??= tenerifeIndexRoadSurfaces()).get(Math.floor(x / 8) * 1024 + Math.floor(z / 8));
+function tenerifeRoadHeight(bins, x, z) {
+  const road = bins.get(Math.floor(x / 8) * 1024 + Math.floor(z / 8));
+  let height = -Infinity;
   if (!road) return height;
   for (const t of road) {
     const dx = x - t.x, dz = z - t.z;
@@ -81,6 +124,19 @@ function tenerifeTerrainHeight(x, z) {
     if (u >= -.0001 && v >= -.0001 && u + v <= 1.0001) height = Math.max(height, t.y + u * t.ay + v * t.by);
   }
   return height;
+}
+
+function tenerifeTerrainHeight(x, z) {
+  const primary = tenerifeRoadHeight(tenerifePrimaryRoad ??= tenerifeIndexRoadSurfaces('main'), x, z);
+  if (Number.isFinite(primary)) return primary;
+  const step = tenerifeTerrainStep;
+  const gx = Math.floor(x / step) * step, gz = Math.floor(z / step) * step;
+  const u = (x - gx) / step, v = (z - gz) / step;
+  const east = tenerifeTerrainVertex(gx + step, gz), south = tenerifeTerrainVertex(gx, gz + step);
+  const height = u + v <= 1
+    ? (1 - u - v) * tenerifeTerrainVertex(gx, gz) + u * east + v * south
+    : (u + v - 1) * tenerifeTerrainVertex(gx + step, gz + step) + (1 - v) * east + (1 - u) * south;
+  return Math.max(height, tenerifeRoadHeight(tenerifeRoadTriangles ??= tenerifeIndexRoadSurfaces('other'), x, z));
 }
 
 function TenerifeTerrain({ tiles, tx, tz }) {

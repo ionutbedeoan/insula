@@ -370,7 +370,8 @@ async function metrics(){
 async function play(){
   await page.goto(url)
   await button('Insula ascunsă').waitFor()
-  await button('Explorează Tenerife').waitFor()
+  await button('Explorează cu mașina').waitFor()
+  assert.equal(await page.locator('canvas').count(),0)
   await click('Insula ascunsă')
   assert.equal(await page.locator('html').getAttribute('lang'),'ro')
   if(staticBuild){

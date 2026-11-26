@@ -2,7 +2,7 @@ INSULA UITATĂ
 Ruta del Viento · 5,48 km
 
 Pe laptop deschide The-Forgotten-Island-Mobile.html din rădăcina proiectului în
-Chrome, Edge sau Firefox. În meniu alege „Explorează Tenerife”.
+Chrome, Edge sau Firefox. În meniu alege „Explorează cu mașina”.
 
 Pe iPhone sau Android
 1. Păstrează acest dosar în proiect, alături de directorul dist din rădăcină.

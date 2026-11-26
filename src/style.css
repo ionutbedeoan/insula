@@ -23,6 +23,7 @@ button,select,input{touch-action:manipulation}
 .game,.island-canvas,.scene-error,.webgl-fallback{position:fixed!important;inset:0;width:100%;height:100%}
 .island-canvas canvas{display:block;touch-action:none}
 .game{isolation:isolate}
+.menu-backdrop{position:absolute;inset:0;background-position:center;background-size:cover;pointer-events:none}
 .tenerife-frame{position:fixed;inset:0;width:100%;height:100%;border:0}
 .scene-error,.webgl-fallback{background:linear-gradient(140deg,#172f2c,#54786b 54%,#8bad98)}
 .webgl-fallback{display:grid;place-items:center;padding:2em;text-align:center}

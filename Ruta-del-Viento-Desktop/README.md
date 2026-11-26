@@ -1,6 +1,6 @@
 # Ruta del Viento · Windows
 
-## Explorează Tenerife
+## Explorează cu mașina
 
 Scena `Assets/Scenes/ExploreazaTenerife.unity` include ruta completă de 5,48 km, harta cu 21 de drumuri, Puerto Bruma și relieful vulcanic. În Unity Hub deschide acest proiect cu revizia `6000.6.10f1`. Din **Tenerife → Deschide scena**, apasă **Play**, apoi **Pornește la drum**.
 

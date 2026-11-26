@@ -17,6 +17,7 @@ import { makeRuntime } from './runtime.ts'
 import { MobileControls, touchDevice } from './mobile-controls.tsx'
 import { Scene } from './scene.tsx'
 import { bearing, places, type PlaceId } from './world-data.ts'
+import menuIsland from './assets/menu-island.jpg?url&inline'
 
 type Panel='pause'|'map'|'journal'|'inventory'|'settings'|'controls'|'item'|'victory'|'reset'|'npc'|'fieldwork'|null
 const initialSave=()=>decodeSave(readStorage(saveKey))
@@ -52,6 +53,7 @@ export function App({focusTenerife,onExploreTenerife}:{focusTenerife:boolean;onE
   const [saved,setSaved]=useState(()=>Boolean(initialSave()))
   const [started,setStarted]=useState(false)
   const [islandMenu,setIslandMenu]=useState(false)
+  const showScene=started||islandMenu
   const [panel,setPanel]=useState<Panel>(null)
   const [item,setItem]=useState<Item|null>(null)
   const [scopeHeading,setScopeHeading]=useState<number>(scopeStop.initial)
@@ -244,6 +246,9 @@ export function App({focusTenerife,onExploreTenerife}:{focusTenerife:boolean;onE
   const askNew=()=>{if(saved){resetBack.current=panel;open('reset')}else start(true)}
   const toMainMenu=()=>{
     restoreIslandButton.current=true
+    surface.current=null
+    setLoaded(false)
+    setFailed(false)
     setIslandMenu(false)
   }
   const toMenu=()=>{
@@ -263,14 +268,15 @@ export function App({focusTenerife,onExploreTenerife}:{focusTenerife:boolean;onE
   const panelTitle=panel==='item'&&item?localItem(item,language).title:panel==='npc'?'Inès Vidal':panel==='fieldwork'?t('Field notebook'):panel&&panel!=='item'?t(panelTitles[panel]):null
 
   return <main className={'game'+(started?' active-game':' title-game')+(device?' touch-game':'')} data-mode={started?(panel??'play'):'menu'} data-camera={settings.camera}>
-    <SceneBoundary onError={()=>setFailed(true)}><Scene runtime={runtime} progress={progress} settings={settings}
+    {(!showScene||!loaded)&&<div className="menu-backdrop" aria-hidden="true" style={{backgroundImage:`url("${menuIsland}")`}}/>}
+    {showScene&&<SceneBoundary onError={()=>setFailed(true)}><Scene runtime={runtime} progress={progress} settings={settings}
       live={isLive} menu={!started} hud={compass} scopeHeading={viewingScope?scopeHeading:undefined}
       onReady={canvas=>{surface.current=canvas;setLoaded(true)}}
       callbacks={{
         onPlace,onTarget:setTarget,onNpcNear:setNpcNear,onField:setFieldTarget,onHeartbeat:()=>save(),
         onCaptureExit:()=>{if(live.current)open('pause')}
       }}
-    /></SceneBoundary>
+    /></SceneBoundary>}
     {!started&&<section className="main-menu" aria-label={t(islandMenu?'Hidden Island':'Main menu')}>
       <div className="menu-content">
         <div className="menu-rule" aria-hidden="true"><span>✦</span></div>
@@ -282,7 +288,7 @@ export function App({focusTenerife,onExploreTenerife}:{focusTenerife:boolean;onE
             <button key="new" className={'button '+(saved?'secondary':'primary')} disabled={!loaded} onClick={askNew}>{t('New game')} <span aria-hidden="true">→</span></button>
           </>:<>
             <button key="island" className="button primary" autoFocus={restoreIslandButton.current} onClick={()=>setIslandMenu(true)}>{t('Hidden Island')} <span aria-hidden="true">→</span></button>
-            <button key="tenerife" className="button secondary" autoFocus={focusTenerife&&!restoreIslandButton.current} onClick={onExploreTenerife}>{t('Explore Tenerife')} <span aria-hidden="true">→</span></button>
+            <button key="tenerife" className="button secondary" autoFocus={focusTenerife&&!restoreIslandButton.current} onClick={onExploreTenerife}>{t('Explore by car')} <span aria-hidden="true">→</span></button>
           </>}
           <div className="submenu">
             {islandMenu&&<button className="text-button" autoFocus onClick={toMainMenu}>{t('Main menu')}</button>}
@@ -292,7 +298,7 @@ export function App({focusTenerife,onExploreTenerife}:{focusTenerife:boolean;onE
         </div>
       </div>
       <div className="menu-footer"><span>{t('Single-player exploration')}</span><span>{t(device?'Touch controls':'Keyboard & mouse')}</span></div>
-      {!loaded&&!failed&&<p className="engine-status" role="status">{t('Preparing the island…')}</p>}
+      {showScene&&!loaded&&!failed&&<p className="engine-status" role="status">{t('Preparing the island…')}</p>}
     </section>}
     {failed&&<div className="engine-error" role="alert">{t('The island could not open a 3D scene. Enable hardware acceleration and WebGL 2 in your browser, then reload.')}</div>}
     {isLive&&<div className="hud">

@@ -11,6 +11,7 @@ namespace TenerifeDesktop
         internal IslandData Data { get; private set; }
         internal GroundGrid Ground { get; private set; }
         private readonly Dictionary<Vector2Int,List<Segment>> roadGrid=new();
+        private readonly Dictionary<Vector2Int,List<RoadTriangle>> mainRoadSurface=new();
         private readonly Dictionary<Vector2Int,List<RoadTriangle>> roadSurfaces=new();
         private readonly Dictionary<Vector2Int,List<Blocker>> blockers=new();
         private readonly Dictionary<Vector2Int,TileProps> decorations=new();
@@ -148,10 +149,50 @@ namespace TenerifeDesktop
 
         public float Elevation(Vector3 p)
         {
-            float height=Ground.At(p.x,p.z);
-            if(roadSurfaces.TryGetValue(Index(p.x,p.z,RoadCell),out var triangles))
-                foreach(var triangle in triangles)height=Mathf.Max(height,triangle.Height(p.x,p.z));
+            float primary=RoadHeight(mainRoadSurface,p.x,p.z);
+            if(!float.IsNegativeInfinity(primary))return primary;
+            return Mathf.Max(TerrainHeight(p.x,p.z),RoadHeight(roadSurfaces,p.x,p.z));
+        }
+
+        private static float RoadHeight(Dictionary<Vector2Int,List<RoadTriangle>> surfaces,float x,float z)
+        {
+            float height=float.NegativeInfinity;
+            if(surfaces.TryGetValue(Index(x,z,RoadCell),out var triangles))
+                foreach(var triangle in triangles)height=Mathf.Max(height,triangle.Height(x,z));
             return height;
+        }
+
+        private static float JunctionBlend(Surface main) => main.road==null?0:
+            1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(main.road.half+.35f,main.road.half+11,main.distance));
+
+        private float GroundHeight(float x,float z)
+        {
+            float ground=Ground.At(x,z);
+            var main=Nearest(new Vector3(x,0,z),true);
+            return main.road==null?ground:Mathf.Lerp(ground,Mathf.Min(ground,main.y-main.distance*.012f-.27f),JunctionBlend(main));
+        }
+
+        public float TerrainHeight(float x,float z)
+        {
+            var main=Nearest(new Vector3(x,0,z),true);
+            if(main.road==null||main.distance>main.road.half+17)return Ground.At(x,z);
+            const float step=4;
+            float gx=Mathf.Floor(x/step)*step,gz=Mathf.Floor(z/step)*step;
+            float u=(x-gx)/step,v=(z-gz)/step;
+            float b=GroundHeight(gx+step,gz),c=GroundHeight(gx,gz+step);
+            return u+v<=1?GroundHeight(gx,gz)*(1-u-v)+b*u+c*v:
+                GroundHeight(gx+step,gz+step)*(u+v-1)+b*(1-v)+c*(1-u);
+        }
+
+        private Vector3 FitJunction(Vector3 vertex)
+        {
+            var main=Nearest(vertex,true);
+            float blend=JunctionBlend(main);
+            if(blend<=0)return vertex;
+            float surface=RoadHeight(mainRoadSurface,vertex.x,vertex.z);
+            if(float.IsNegativeInfinity(surface))surface=main.y+.051f-main.distance*.012f;
+            vertex.y=Mathf.Lerp(vertex.y,surface-.045f,blend);
+            return vertex;
         }
 
         public bool Blocked(Vector3 point,float radius)
@@ -377,8 +418,8 @@ namespace TenerifeDesktop
             {
                 int v=x+z*row;
                 float wx=cell.x*Tile+x*step,wz=cell.y*Tile+z*step;
-                vertices[v]=new Vector3(wx,Ground.At(wx,wz),wz);
-                normals[v]=new Vector3(Ground.At(wx-2,wz)-Ground.At(wx+2,wz),4,Ground.At(wx,wz-2)-Ground.At(wx,wz+2)).normalized;
+                vertices[v]=new Vector3(wx,GroundHeight(wx,wz),wz);
+                normals[v]=new Vector3(GroundHeight(wx-2,wz)-GroundHeight(wx+2,wz),4,GroundHeight(wx,wz-2)-GroundHeight(wx,wz+2)).normalized;
                 colors[v]=Ground.Land(wx,wz);
                 if(x<divisions&&z<divisions)
                 {
@@ -433,10 +474,13 @@ namespace TenerifeDesktop
             white.SetColor("_Tint",ReadColor("#ede5cf",Color.white));
             foreach(var road in Data.roads)
             {
-                Ribbon(road.points,-road.half,0,.051f,road.surface=="asphalt"?asphalt:gravel,"Drum "+road.surface,support:true);
-                Ribbon(road.points,0,road.half,.051f,road.surface=="asphalt"?asphalt:gravel,"Drum "+road.surface,support:true);
-                Ribbon(road.points,-road.half-1.15f,-road.half,.051f,gravel,"Acostament",support:true,blendLeft:true);
-                Ribbon(road.points,road.half,road.half+1.15f,.051f,gravel,"Acostament",support:true,blendRight:true);
+                var points=road.main?road.points:JunctionPoints(road);
+                var material=road.surface=="asphalt"?asphalt:gravel;
+                string label=road.main?"Drum principal":"Drum "+road.surface;
+                Ribbon(points,-road.half,0,.051f,material,label,road:road);
+                Ribbon(points,0,road.half,.051f,material,label,road:road);
+                Ribbon(points,-road.half-1.15f,-road.half,.051f,gravel,"Acostament",road:road,blendLeft:true);
+                Ribbon(points,road.half,road.half+1.15f,.051f,gravel,"Acostament",road:road,blendRight:true);
                 if(!road.main)continue;
                 Ribbon(road.points,-road.half+.25f,-road.half+.36f,.069f,white,"Marcaj exterior");
                 Ribbon(road.points,road.half-.36f,road.half-.25f,.069f,white,"Marcaj exterior");
@@ -449,26 +493,57 @@ namespace TenerifeDesktop
             }
         }
 
-        private void Ribbon(RoadPoint[] points,float left,float right,float raise,Material material,string label,int group=0,
-            bool support=false,bool blendLeft=false,bool blendRight=false)
+        private RoadPoint[] JunctionPoints(Road road)
         {
-            var vertices=new Vector3[points.Length*2];var indices=new List<int>((points.Length-1)*6);
+            bool NearMain(RoadPoint point)
+            {
+                var main=Nearest(point.Position,true);
+                return main.road!=null&&main.distance<main.road.half+14+road.half;
+            }
+            var points=new List<RoadPoint>{road.points[0]};
+            for(int i=1;i<road.points.Length;i++)
+            {
+                var a=road.points[i-1];var b=road.points[i];
+                if(NearMain(a)||NearMain(b))
+                    for(int part=1;part<3;part++)
+                    {
+                        float t=part/3f;
+                        var p=Vector3.Lerp(a.Position,b.Position,t);
+                        var direction=Vector3.Lerp(a.Forward,b.Forward,t).normalized;
+                        points.Add(new RoadPoint{x=p.x,y=p.y,z=p.z,dx=direction.x,dz=direction.z,s=Mathf.Lerp(a.s,b.s,t)});
+                    }
+                points.Add(b);
+            }
+            return points.ToArray();
+        }
+
+        private void Ribbon(RoadPoint[] points,float left,float right,float raise,Material material,string label,int group=0,
+            Road road=null,bool blendLeft=false,bool blendRight=false)
+        {
+            bool junction=road!=null&&!road.main;
+            int width=junction?Mathf.CeilToInt(right-left)+1:2;
+            var surface=road!=null&&road.main&&!blendLeft&&!blendRight?mainRoadSurface:roadSurfaces;
+            var vertices=new Vector3[points.Length*width];var indices=new List<int>((points.Length-1)*(width-1)*6);
             for(int i=0;i<points.Length;i++)
             {
                 var p=points[i];
                 Vector3 normal=new Vector3(-p.dz,0,p.dx);
-                vertices[2*i]=p.Position+normal*left+Vector3.up*(raise-Mathf.Abs(left)*.012f);
-                vertices[2*i+1]=p.Position+normal*right+Vector3.up*(raise-Mathf.Abs(right)*.012f);
-                if(blendLeft)vertices[2*i].y=Ground.At(vertices[2*i].x,vertices[2*i].z)-.01f;
-                if(blendRight)vertices[2*i+1].y=Ground.At(vertices[2*i+1].x,vertices[2*i+1].z)-.01f;
-                if(i==0||group>0&&i%group==0)continue;
-                int a=2*i-2;
-                indices.Add(a);indices.Add(a+1);indices.Add(a+2);
-                indices.Add(a+1);indices.Add(a+3);indices.Add(a+2);
-                if(support)
+                for(int column=0;column<width;column++)
                 {
-                    IndexRoad(vertices[a],vertices[a+1],vertices[a+2]);
-                    IndexRoad(vertices[a+1],vertices[a+3],vertices[a+2]);
+                    float offset=Mathf.Lerp(left,right,column/(float)(width-1));
+                    var vertex=p.Position+normal*offset+Vector3.up*(raise-Mathf.Abs(offset)*.012f);
+                    if(blendLeft&&column==0||blendRight&&column==width-1)vertex.y=GroundHeight(vertex.x,vertex.z)-.01f;
+                    int index=i*width+column;
+                    vertices[index]=junction?FitJunction(vertex):vertex;
+                    if(i==0||column==0||group>0&&i%group==0)continue;
+                    int a=index-width-1;
+                    indices.Add(a);indices.Add(a+1);indices.Add(index-1);
+                    indices.Add(a+1);indices.Add(index);indices.Add(index-1);
+                    if(road!=null)
+                    {
+                        IndexRoad(surface,vertices[a],vertices[a+1],vertices[index-1]);
+                        IndexRoad(surface,vertices[a+1],vertices[index],vertices[index-1]);
+                    }
                 }
             }
             var mesh=new Mesh{name=label,vertices=vertices,triangles=indices.ToArray()};
@@ -476,7 +551,7 @@ namespace TenerifeDesktop
             Attach(transform,mesh,material).GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
         }
 
-        private void IndexRoad(Vector3 a,Vector3 b,Vector3 c)
+        private static void IndexRoad(Dictionary<Vector2Int,List<RoadTriangle>> surfaces,Vector3 a,Vector3 b,Vector3 c)
         {
             float area=(a.x-c.x)*(b.z-c.z)-(a.z-c.z)*(b.x-c.x);
             if(Mathf.Abs(area)<.00001f)return;
@@ -484,7 +559,7 @@ namespace TenerifeDesktop
             var min=Index(Mathf.Min(a.x,Mathf.Min(b.x,c.x)),Mathf.Min(a.z,Mathf.Min(b.z,c.z)),RoadCell);
             var max=Index(Mathf.Max(a.x,Mathf.Max(b.x,c.x)),Mathf.Max(a.z,Mathf.Max(b.z,c.z)),RoadCell);
             for(int z=min.y;z<=max.y;z++)
-            for(int x=min.x;x<=max.x;x++)Add(roadSurfaces,new Vector2Int(x,z),triangle);
+            for(int x=min.x;x<=max.x;x++)Add(surfaces,new Vector2Int(x,z),triangle);
         }
 
         private void BuildWater()

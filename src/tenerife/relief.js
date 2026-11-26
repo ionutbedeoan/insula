@@ -177,7 +177,9 @@ function tenerifeGroundAt(x,z,natural,road) {
   const edge=basin?8:36;
   const blend=tenerifeSaturate(road.road.half+3,road.road.half+edge,road.distance);
   const grade=road.y-.32;
-  return tenerifeGradedGround(x,z,grade+(natural-grade)*blend,road);
+  const ground=tenerifeGradedGround(x,z,grade+(natural-grade)*blend,road);
+  const primary=tenerifePrimaryProfile(x,z,road);
+  return primary?.blend?Ua(ground,Math.min(ground,primary.height-.32),primary.blend):ground;
 }
 
 function tenerifeReliefRoutes(mainPoint,makeRoad) {

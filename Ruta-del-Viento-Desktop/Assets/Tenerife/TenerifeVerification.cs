@@ -59,11 +59,12 @@ namespace TenerifeDesktop
         private void VerifySurfaceContact()
         {
             // Raycasts against the actual render meshes provide an independent check on road support.
-            const int probeLayer=31;
+            const int mainLayer=30,sideLayer=31;
+            const int allRoads=(1<<mainLayer)|(1<<sideLayer);
             foreach(var filter in GetComponentsInChildren<MeshFilter>())
             {
                 if(!filter.name.StartsWith("Drum ",StringComparison.Ordinal)&&filter.name!="Acostament")continue;
-                filter.gameObject.layer=probeLayer;
+                filter.gameObject.layer=filter.name=="Drum principal"?mainLayer:sideLayer;
                 filter.gameObject.AddComponent<MeshCollider>().sharedMesh=filter.sharedMesh;
             }
             Physics.SyncTransforms();
@@ -81,8 +82,8 @@ namespace TenerifeDesktop
                 for(int index=0;index<4;index++)
                 {
                     var tire=carPosition+rotation*new Vector3(index%2==0?-.915f:.915f,.001f,index<2?-1.36f:1.36f);
-                    float surface=world.Ground.At(tire.x,tire.z);
-                    if(Physics.Raycast(tire+Vector3.up*8,Vector3.down,out var hit,16,1<<probeLayer))
+                    float surface=world.TerrainHeight(tire.x,tire.z);
+                    if(Physics.Raycast(tire+Vector3.up*8,Vector3.down,out var hit,16,allRoads))
                         surface=Mathf.Max(surface,hit.point.y);
                     maximum=Mathf.Max(maximum,surface-tire.y);
                     samples++;
@@ -90,6 +91,29 @@ namespace TenerifeDesktop
             }
             if(maximum>.045f)throw new InvalidOperationException($"Tire penetration {maximum:F3} m.");
             Debug.Log($"Tenerife verification: {samples} tire contacts checked across 21 roads. Penetration {maximum:F3} m.");
+            var main=world.Data.roads[0];
+            float mismatch=0;
+            int overlaps=0;
+            for(float meters=6;meters<main.length-6;meters+=.5f)
+            {
+                var point=main.At(meters);
+                var right=Across(point.Forward);
+                for(int lane=-4;lane<=4;lane++)
+                {
+                    var position=point.Position+right*lane;
+                    var origin=position+Vector3.up*8;
+                    if(!Physics.Raycast(origin,Vector3.down,out var deck,16,1<<mainLayer))continue;
+                    mismatch=Mathf.Max(mismatch,Mathf.Abs(world.Elevation(position)-deck.point.y));
+                    mismatch=Mathf.Max(mismatch,world.TerrainHeight(position.x,position.z)-deck.point.y);
+                    if(Physics.Raycast(origin,Vector3.down,out var side,16,1<<sideLayer))
+                    {
+                        overlaps++;
+                        mismatch=Mathf.Max(mismatch,side.point.y-deck.point.y);
+                    }
+                }
+            }
+            if(overlaps==0||mismatch>.035f)throw new InvalidOperationException($"Main road discontinuity {mismatch:F3} m.");
+            Debug.Log($"Tenerife verification: {overlaps} overlapping road samples. Highest difference {mismatch:F3} m.");
         }
 
         private void VerifyDrive()

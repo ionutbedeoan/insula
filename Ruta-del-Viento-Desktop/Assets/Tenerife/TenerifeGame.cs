@@ -267,7 +267,8 @@ namespace TenerifeDesktop
             elapsed+=dt;
             steeringInput=steer;
             var old=carPosition;
-            var road=world.Nearest(old);
+            var mainRoad=world.Nearest(old,true);
+            var road=mainRoad.road!=null&&mainRoad.distance<=mainRoad.road.half?mainRoad:world.Nearest(old);
             bool onRoad=road.road!=null&&road.distance<road.road.half+.63f;
             bool paved=onRoad&&road.road.surface=="asphalt";
             surface=paved?"asfalt":onRoad?"pietriș":"pământ";
@@ -523,7 +524,7 @@ namespace TenerifeDesktop
             }
             else
             {
-                GUILayout.Label(intro?"Explorează Tenerife":"Pauză",headingStyle);
+                GUILayout.Label(intro?"Explorează cu mașina":"Pauză",headingStyle);
                 GUILayout.Label(intro?"De la plaja vulcanică la belvedere, prin Puerto Bruma și pădurea Alisio.":"Drumul, descoperirile și harta sunt disponibile din mașină sau pe jos.",textStyle);
                 GUILayout.Space(16);
                 if(GUILayout.Button(intro?"Pornește la drum":"Continuă",GUILayout.Height(44))){intro=false;paused=false;}

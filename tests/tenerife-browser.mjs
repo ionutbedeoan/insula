@@ -37,7 +37,9 @@ try {
         })
         await page.goto(mobile?(process.env.TENERIFE_MOBILE_URL??url):url)
         const press=locator=>mobile?locator.tap():locator.click()
-        const entry=page.getByRole('button',{name:'Explorează Tenerife',exact:true})
+        const entry=page.getByRole('button',{name:'Explorează cu mașina',exact:true})
+        await entry.waitFor()
+        assert.equal(await page.locator('canvas').count(),0)
         await press(entry)
         const frame=page.frameLocator('iframe[title="Ruta del Viento"]')
         const button=name=>frame.getByRole('button',{name,exact:true})
@@ -140,6 +142,7 @@ try {
         await press(button('Pune pauză'))
         await press(button('Meniu principal'))
         await entry.waitFor()
+        assert.equal(await page.locator('canvas').count(),0)
         assert.deepEqual(errors,[])
         console.log(round,profile,'walking, journal, driving and return passed')
       }finally{await context.close()}

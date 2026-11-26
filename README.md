@@ -6,7 +6,7 @@ Un joc de explorare fără violență, în care refaci traseul unei expediții t
 
 Deschide **The-Forgotten-Island-Mobile.html** într-un browser desktop cu WebGL 2. Jocul, modelele și sunetele sunt incluse în fișier. Dacă browserul restricționează accesul la salvare pentru fișiere locale, pornește proiectul prin Vite. Calitatea grafică pornește pe **Ridicată** pe desktop și pe telefon. Opțiunile salvate au prioritate. Presetul **Scăzută** reduce rezoluția și vegetația de la nivelul solului.
 
-Din meniul principal, **Insula ascunsă** deschide expediția, cu opțiunile **Continuă** și **Joc nou**. **Explorează Tenerife** deschide **Ruta del Viento**, un traseu auto de 5,48 km. Apasă **Pornește la drum** pentru a prelua volanul. Din pauza oricărui mod poți reveni la meniul principal.
+Din meniul principal, **Insula ascunsă** deschide expediția, cu opțiunile **Continuă** și **Joc nou**. **Explorează cu mașina** deschide **Ruta del Viento**, un traseu auto de 5,48 km. Apasă **Pornește la drum** pentru a prelua volanul. Din pauza oricărui mod poți reveni la meniul principal.
 
 În Tenerife, **C** schimbă camera, iar tragerea cu mouse-ul sau cu degetul schimbă unghiul. **F** permite coborârea când mașina este oprită și urcarea când ești lângă ea. Pe jos folosești **WASD**, **Shift** pentru alergare și **E** pentru descoperirile din apropiere. Pe telefon folosești săgețile și butoanele de pe ecran. Colecția se salvează local și se deschide cu **J** sau din bara de comenzi.
 
@@ -90,11 +90,11 @@ Pentru un site static, publică întregul director `dist/` și deschide `index.h
 
 ## Unity pe Windows
 
-Deschide proiectul [Ruta-del-Viento-Desktop](Ruta-del-Viento-Desktop/) în Unity Hub. Din **Tenerife → Deschide scena** poți porni **Explorează Tenerife** cu **Play**. Comanda **Tenerife → Build Windows** generează executabilul scenei în `Builds/Windows-Tenerife/`.
+Deschide proiectul [Ruta-del-Viento-Desktop](Ruta-del-Viento-Desktop/) în Unity Hub. Alege **Tenerife → Deschide scena**, apasă **Play** și pornește **Explorează cu mașina**. Comanda **Tenerife → Build Windows** generează executabilul scenei în `Builds/Windows-Tenerife/`.
 
 ## Verificare în browser și randări de inspecție
 
-Pentru Tenerife, rulează `node tests/tenerife-route.mjs` după build. Testul verifică poziția roților pe cele 21 de drumuri, parcurge traseul principal în simulare și măsoară timpii între cadre în patru zone.
+Pentru Tenerife, rulează `node tests/tenerife-route.mjs` după build. Testul verifică dacă meniul pornește fără o scenă WebGL, măsoară nivelul racordurilor și contactul roților, parcurge traseul principal în simulare și înregistrează timpii de cadru în patru zone.
 
 Cu serverul local pornit, instalează Chromium pentru Playwright prin `npx playwright install chromium` și rulează `npm run test:browser`. Poți seta `ISLAND_HEADED=1` pentru a urmări parcurgerile și `ISLAND_TEST_URL` pentru un port diferit. Testul folosește comenzile jocului, inclusiv mersul, documentele, puzzle-urile, harta, dialogul lui Inès și carnetul naturalistului. Detaliile despre executarea testelor din această ediție se găsesc în **TEST_REPORT.md**. Pentru verificarea interfeței și comenzilor în Firefox fără WebGL:
 

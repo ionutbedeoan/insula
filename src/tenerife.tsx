@@ -86,6 +86,7 @@ class pF{
       return tenerifeVehicleHits(x,z,heading,obstacles);
     }`],
     ["ge=_P(_,re),ce=_P(s.x,s.z)","ge=tenerifeTerrainHeight(_,re),ce=tenerifeTerrainHeight(s.x,s.z)"],
+    ["const d=Math.abs(f),p=Ws(s.x,s.z);","const d=Math.abs(f),main=Ws(s.x,s.z,!0),p=main&&main.distance<=main.road.half?main:Ws(s.x,s.z);"],
     [/const ae=_P\(s\.x\+S\*1\.3,.*?s\.y=Vd\(s\.y,_P\(s\.x,s\.z\),14,t\)/s,"tenerifeGroundCar(s,t,tenerifeTerrainHeight)"],
     ["const X4=1/110","const X4=1/80"],
     ["8.6*(1-.76*ar(13,55,d))","8.6*(C?.58:w?1:.78)*(1-.76*ar(13,55,d))"],
@@ -118,6 +119,7 @@ class pF{
     [/,r=ee\.useMemo\(\(\)=>\{const o=new Map,u=f=>\{.*?\},\[s,e,t\]\)(?=;return E\.jsxs\(E\.Fragment,\{children:\[E\.jsx\("fogExp2")/s,""],
     ["r.map(([o,u])=>E.jsx(AO,{kind:o,items:u},o))","E.jsx(TenerifeScenery,{tx:s,tz:e,mobile:t})"],
     ["for(const t of DA)e(t.points,-t.half-1.15,t.half+1.15,-.095)","tenerifeRoadRibbons(e,'shoulder')"],
+    ["s((u,P,f,v,d=1)=>{const p=e.length/3;u.forEach((w,C)=>{for(const M of[P,f]){e.push(w.x-w.dz*M,w.y+v-Math.abs(M)*.012,w.z+w.dx*M)","s((u,P,f,v,d=1,fit)=>{const p=e.length/3;u.forEach((w,C)=>{for(const M of[P,f]){const vx=w.x-w.dz*M,vy=w.y+v-Math.abs(M)*.012,vz=w.z+w.dx*M;e.push(vx,fit?fit(vx,vy,vz):vy,vz)"],
     ['for(const t of DA.filter(n=>n.surface==="asphalt")){const n=t.main?0:.065;e(t.points,-t.half,-2.8,n),e(t.points,-2.8,0,n),e(t.points,0,2.8,n),e(t.points,2.8,t.half,n)}',"tenerifeRoadRibbons(e,'asphalt')"],
     ['for(const t of DA.filter(n=>n.surface==="gravel"))e(t.points,-t.half,t.half,.065,1.6)',"tenerifeRoadRibbons(e,'gravel')"],
     ["E.jsx(BO,{quality:s.quality,mobile:s.mobile})","E.jsx(TenerifeFrameBudget,{quality:s.quality,mobile:s.mobile})"],
