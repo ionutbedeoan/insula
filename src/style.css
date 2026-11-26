@@ -315,7 +315,7 @@ kbd{font:600 11px/1.2 "Segoe UI",system-ui,sans-serif;display:inline-flex;align-
 .touch-pad [data-key="backward"]{grid-area:2/2}
 .touch-pad [data-key="right"]{grid-area:2/3}
 .touch-actions{
-  right:var(--edge-right);bottom:var(--edge-bottom);width:min(180px,28vw);display:grid;gap:5px;pointer-events:none
+  right:var(--edge-right);bottom:calc(var(--edge-bottom) + 10dvh);width:min(180px,28vw);display:grid;gap:5px;pointer-events:none
 }
 .touch-actions button{min-height:44px;min-width:44px;font-size:12px;font-weight:600;pointer-events:auto;padding:4px 7px}
 .touch-actions .touch-use{background:#dfb577;color:#20362a;border-color:#f6daa6;min-height:50px;overflow-wrap:anywhere}
